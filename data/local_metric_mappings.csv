@@ -1,0 +1,82 @@
+node_id,section,dataset,metric_key,label,note,value_format
+low_income,primary,census,poverty,People below the poverty level,A direct local indicator of economic hardship.,percent
+low_income,primary,census,median_household_income,Median household income,Another local indicator of household economic resources.,dollars
+low_income,related,census,snap,Households receiving SNAP,Related economic and food-assistance context.,percent
+unemployment,primary,census,unemployment,Unemployment rate,Directly measures unemployment among the civilian labor force.,percent
+unemployment,primary,census,labor_force,Civilian labor-force participation,Share of the population age 16+ participating in the civilian labor force.,percent
+unemployment,related,census,poverty,People below the poverty level,Related economic context. Poverty is not the same as unemployment.,percent
+housing_instability,primary,census,renter_cost_burden,Renters spending 30%+ of income on rent,Housing cost burden is an important indicator of housing affordability.,percent
+housing_instability,primary,census,median_gross_rent,Median gross rent,Local rental-cost context.,dollars
+housing_instability,related,census,poverty,People below the poverty level,Economic context related to housing affordability.,percent
+food_insecurity,primary,cdc,Food insecurity,Food insecurity,Direct CDC PLACES estimate when available.,percent
+food_insecurity,related,census,snap,Households receiving SNAP,SNAP participation is related to food need but does not measure food insecurity itself.,percent
+food_insecurity,related,census,poverty,People below the poverty level,Economic context associated with food insecurity.,percent
+limited_healthy_food_access,related,cdc,Food insecurity,Food insecurity,Related outcome; it is not the same as physical access to healthy food.,percent
+limited_healthy_food_access,related,census,snap,Households receiving SNAP,Related household food-assistance context.,percent
+limited_activity_opportunities,related,cdc,Physical inactivity,Physical inactivity,"A downstream behavioral measure, not a direct measure of the built environment.",percent
+limited_activity_opportunities,related,cdc,Obesity,Obesity,Related population-health context.,percent
+limited_healthcare_access,primary,census,uninsured,People without health insurance,"Insurance coverage is an important access indicator, although access also depends on providers, transportation, cost, and other barriers.",percent
+limited_healthcare_access,related,cdc,routine checkup,Routine checkup measure,Related health-care utilization context.,percent
+lower_diet_quality,related,cdc,Food insecurity,Food insecurity,Food insecurity can constrain food choices but is not a direct diet-quality score.,percent
+lower_diet_quality,related,cdc,Obesity,Obesity,"Related metabolic context, not a direct measure of diet quality.",percent
+physical_inactivity,primary,cdc,Physical inactivity,Physical inactivity,Direct CDC PLACES population estimate.,percent
+physical_inactivity,related,cdc,Obesity,Obesity,Related metabolic-health context.,percent
+excess_body_weight,primary,cdc,Obesity,Obesity prevalence,Direct CDC PLACES population estimate of obesity.,percent
+excess_body_weight,related,cdc,Physical inactivity,Physical inactivity,Related behavioral context.,percent
+excess_body_weight,related,cdc,Diagnosed diabetes,Diagnosed diabetes,Related metabolic-health context.,percent
+insulin_resistance,related,cdc,Obesity,Obesity,"A population-level risk indicator, not a direct measure of insulin resistance.",percent
+insulin_resistance,related,cdc,Diagnosed diabetes,Diagnosed diabetes,"A downstream metabolic outcome, not a direct measure of insulin resistance.",percent
+elevated_blood_glucose,related,cdc,Diagnosed diabetes,Diagnosed diabetes,Related downstream metabolic context; it does not measure prediabetes directly.,percent
+t2d,primary,cdc,Diagnosed diabetes,Diagnosed diabetes,CDC PLACES estimate and the closest available local population measure for this node.,percent
+t2d,related,cdc,Obesity,Obesity,Related diabetes-risk context.,percent
+t2d,related,cdc,Physical inactivity,Physical inactivity,Related diabetes-risk context.,percent
+increased_thirst,related,cdc,Diagnosed diabetes,Diagnosed diabetes,Related disease context only; it does not estimate how common this symptom is.,percent
+frequent_urination,related,cdc,Diagnosed diabetes,Diagnosed diabetes,Related disease context only; it does not estimate how common this symptom is.,percent
+fatigue,related,cdc,Diagnosed diabetes,Diagnosed diabetes,Related disease context only; it does not estimate how common this symptom is.,percent
+blurred_vision,related,cdc,Diagnosed diabetes,Diagnosed diabetes,Related disease context only; it does not estimate how common this symptom is.,percent
+neuropathy,related,cdc,Diagnosed diabetes,Diagnosed diabetes,"Related population context, not neuropathy prevalence.",percent
+kidney_disease,related,cdc,Diagnosed diabetes,Diagnosed diabetes,Important kidney-disease risk context.,percent
+kidney_disease,related,cdc,High blood pressure,High blood pressure,Important kidney-disease risk context.,percent
+cardiovascular_disease,primary,cdc,Coronary heart disease,Coronary heart disease,Direct local cardiovascular disease measure available in CDC PLACES.,percent
+cardiovascular_disease,related,cdc,High blood pressure,High blood pressure,Major cardiovascular risk factor.,percent
+cardiovascular_disease,related,cdc,Diagnosed diabetes,Diagnosed diabetes,Major cardiovascular-risk context.,percent
+stroke,primary,cdc,^Stroke|stroke among,Stroke,Direct CDC PLACES population estimate when available.,percent
+stroke,related,cdc,High blood pressure,High blood pressure,Major stroke risk factor.,percent
+stroke,related,cdc,Diagnosed diabetes,Diagnosed diabetes,Important stroke-risk context.,percent
+eye_disease,related,cdc,Diagnosed diabetes,Diagnosed diabetes,"Related disease context, not diabetic eye-disease prevalence.",percent
+foot_problems,related,cdc,Diagnosed diabetes,Diagnosed diabetes,"Related disease context, not foot-problem prevalence.",percent
+hypertension,primary,cdc,High blood pressure,High blood pressure,Direct CDC PLACES population estimate when available.,percent
+hypertension,related,cdc,Diagnosed diabetes,Diagnosed diabetes,Related cardiometabolic context.,percent
+hypertension,related,cdc,Chronic kidney disease,Chronic kidney disease,Related organ-damage and comorbidity context.,percent
+high_sodium_intake,related,cdc,High blood pressure,High blood pressure,Related outcome; it is not a direct measure of sodium intake.,percent
+chronic_stress,related,cdc,Frequent mental distress,Frequent mental distress,"A related population-level mental-health indicator, not a direct measure of chronic stress.",percent
+chronic_stress,related,cdc,High blood pressure,High blood pressure,"Related cardiovascular context, not a direct measure of stress.",percent
+asthma,primary,cdc,Current asthma,Current asthma among adults,Direct CDC PLACES model-based estimate of current asthma among adults when available.,percent
+asthma,related,cdc,Current smoking,Current smoking among adults,Related community tobacco-use context; it does not measure secondhand smoke exposure or explain asthma prevalence.,percent
+asthma_exacerbation,related,cdc,Current asthma,Current asthma among adults,Related disease prevalence only; CDC PLACES does not provide ZIP-level asthma-attack prevalence here.,percent
+wheezing,related,cdc,Current asthma,Current asthma among adults,Related disease context only; it does not estimate how common wheezing is.,percent
+shortness_of_breath,related,cdc,Current asthma,Current asthma among adults,Related disease context only; it does not estimate how common shortness of breath is.,percent
+chest_tightness,related,cdc,Current asthma,Current asthma among adults,Related disease context only; it does not estimate how common chest tightness is.,percent
+cough,related,cdc,Current asthma,Current asthma among adults,Related disease context only; it does not estimate how common cough is.,percent
+secondhand_smoke,related,cdc,Current smoking,Current smoking among adults,Related tobacco-use context only; it is not a measure of secondhand-smoke exposure.,percent
+damp_mold_exposure,related,cdc,Current asthma,Current asthma among adults,Related respiratory-health context only; it is not a measure of mold or dampness exposure.,percent
+indoor_allergens_pests,related,cdc,Current asthma,Current asthma among adults,Related respiratory-health context only; it is not a measure of indoor allergen or pest exposure.,percent
+high_cholesterol,primary,cdc,High cholesterol,High cholesterol among screened adults,CDC PLACES modeled prevalence among adults who report having had cholesterol checked and having been told their cholesterol was high; people never screened are not represented as known high-cholesterol cases.,percent
+high_cholesterol,related,cdc,Coronary heart disease,Coronary heart disease,Related cardiovascular burden.,percent
+coronary_heart_disease,primary,cdc,Coronary heart disease,Coronary heart disease,CDC PLACES modeled adult prevalence.,percent
+coronary_heart_disease,related,cdc,High blood pressure,High blood pressure,Major related cardiovascular risk factor.,percent
+coronary_heart_disease,related,cdc,High cholesterol,High cholesterol,Major related cardiovascular risk factor.,percent
+copd,primary,cdc,Chronic obstructive pulmonary disease,COPD,CDC PLACES modeled adult COPD prevalence.,percent
+copd,related,cdc,Current smoking,Current smoking,Major COPD risk context.,percent
+copd,related,cdc,Current asthma,Current asthma,Related chronic respiratory disease context.,percent
+cancer,primary,cdc,Cancer \(non-skin\) or melanoma,Cancer (non-skin) or melanoma,CDC PLACES modeled adult prevalence for a broad cancer measure. It is not cancer-type specific and should not be used to infer prevalence of a particular cancer.,percent
+cancer,related,cdc,Current smoking,Current smoking,Important population cancer-risk context.,percent
+cancer,related,cdc,Obesity,Obesity,Related risk context for multiple cancer types.,percent
+depression,primary,cdc,Depression,Diagnosed depressive disorder,CDC PLACES modeled lifetime prevalence of adults reporting a clinician diagnosis of depressive disorder; this is not a measure of current depressive symptoms.,percent
+depression,related,cdc,Frequent mental distress,Frequent mental distress,Related recent mental-health burden; not identical to depression diagnosis.,percent
+tobacco_smoking,primary,cdc,Current smoking,Current smoking,Direct local estimate of current cigarette smoking among adults.,percent
+excessive_alcohol_use,related,cdc,Binge drinking,Binge drinking,Available local alcohol-risk behavior measure; it is not identical to all excessive alcohol use.,percent
+sleep_disturbance,related,cdc,Short sleep duration,Short sleep duration,Related sleep-health measure; it does not capture all forms of sleep disturbance.,percent
+angina_chest_pain,related,cdc,Coronary heart disease,Coronary heart disease,Related disease context; PLACES does not provide ZIP-level angina symptom prevalence.,percent
+heart_attack,related,cdc,Coronary heart disease,Coronary heart disease,Related disease context; not a direct ZIP-level heart-attack prevalence measure.,percent
+copd_exacerbation,related,cdc,Chronic obstructive pulmonary disease,COPD,Related disease context; exacerbation frequency is not directly measured in the connected PLACES data.,percent

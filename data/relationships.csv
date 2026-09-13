@@ -1,0 +1,84 @@
+relationship_id,from_node,to_node,relationship_type,evidence_strength,short_explanation
+rel_001,low_income,food_insecurity,contributes_to,strong,Low income can make it harder to afford enough nutritious food.
+rel_002,unemployment,food_insecurity,contributes_to,strong,Unemployment can reduce household resources available for food.
+rel_003,housing_instability,food_insecurity,contributes_to,moderate,High housing costs can compete with money available for food.
+rel_004,limited_healthy_food_access,lower_diet_quality,influences,strong,Food availability and affordability can shape dietary choices.
+rel_005,food_insecurity,lower_diet_quality,can_contribute_to,strong,"Food insecurity can push people toward cheaper, lower-quality foods."
+rel_006,limited_activity_opportunities,physical_inactivity,influences,moderate,Neighborhood conditions can affect opportunities to be physically active.
+rel_007,lower_diet_quality,excess_body_weight,can_contribute_to,moderate,Diet patterns can influence energy balance and body weight.
+rel_008,physical_inactivity,t2d,increases_risk,strong,Physical inactivity is an established risk factor for Type 2 diabetes.
+rel_009,excess_body_weight,t2d,increases_risk,strong,Overweight and obesity are established risk factors for Type 2 diabetes.
+rel_010,excess_body_weight,insulin_resistance,can_contribute_to,strong,Excess adiposity can contribute to insulin resistance.
+rel_011,insulin_resistance,elevated_blood_glucose,contributes_to,strong,Insulin resistance can impair normal glucose regulation.
+rel_012,elevated_blood_glucose,t2d,disease_process,strong,Persistent elevated blood glucose is central to diabetes.
+rel_013,t2d,increased_thirst,can_cause,strong,Increased thirst is a recognized symptom of diabetes.
+rel_014,t2d,frequent_urination,can_cause,strong,Frequent urination is a recognized symptom of diabetes.
+rel_015,t2d,fatigue,can_cause,strong,Fatigue is a recognized symptom of diabetes.
+rel_016,t2d,blurred_vision,can_cause,strong,Blurred vision is a recognized symptom of diabetes.
+rel_017,t2d,neuropathy,can_lead_to,strong,Diabetes can damage nerves over time.
+rel_018,t2d,kidney_disease,can_lead_to,strong,Diabetes can damage the kidneys over time.
+rel_019,t2d,cardiovascular_disease,increases_risk,strong,Diabetes increases cardiovascular disease risk.
+rel_020,t2d,stroke,increases_risk,strong,Diabetes increases stroke risk.
+rel_021,t2d,eye_disease,can_lead_to,strong,Diabetes can damage the eyes and threaten vision.
+rel_022,t2d,foot_problems,can_lead_to,strong,"Diabetes can contribute to foot problems, partly through nerve and vascular damage."
+rel_023,limited_healthcare_access,t2d,influences_prevention_and_management,moderate,"Access to health care affects prevention, diagnosis, treatment, and ongoing management."
+rel_024,food_insecurity,t2d,increases_risk,strong,Food insecurity is associated with substantially higher prevalence/risk of Type 2 diabetes.
+rel_025,physical_inactivity,excess_body_weight,can_contribute_to,moderate,Physical inactivity may contribute to excess weight and metabolic risk.
+rel_026,high_sodium_intake,hypertension,increases_risk,strong,Higher sodium intake can raise blood pressure and increase hypertension risk.
+rel_027,physical_inactivity,hypertension,increases_risk,strong,Physical inactivity is a recognized modifiable risk factor for high blood pressure.
+rel_028,excess_body_weight,hypertension,increases_risk,strong,Overweight and obesity increase the risk of developing high blood pressure.
+rel_029,chronic_stress,hypertension,can_contribute_to,moderate,Persistent stress can contribute to higher blood pressure directly and through related behaviors.
+rel_030,limited_healthcare_access,hypertension,influences_prevention_and_management,moderate,"Access to screening, medication, follow-up, and team-based care affects hypertension detection and control."
+rel_031,hypertension,cardiovascular_disease,increases_risk,strong,High blood pressure is a major risk factor for heart and cardiovascular disease.
+rel_032,hypertension,stroke,increases_risk,strong,High blood pressure is a major modifiable risk factor for stroke.
+rel_033,hypertension,kidney_disease,can_lead_to,strong,High blood pressure can damage kidney blood vessels and contribute to chronic kidney disease.
+rel_034,t2d,hypertension,increases_risk,strong,"Diabetes and high blood pressure commonly occur together, and diabetes increases hypertension risk."
+rel_035,housing_instability,damp_mold_exposure,can_increase_exposure,moderate,"Housing instability and unaffordable housing can increase the chance of living in substandard housing with leaks, mold, or other indoor hazards."
+rel_036,poor_air_quality,asthma_exacerbation,can_trigger,strong,Air pollution and wildfire smoke can trigger asthma symptoms and attacks.
+rel_037,damp_mold_exposure,asthma_exacerbation,can_trigger,strong,Mold exposure can trigger asthma symptoms or attacks in susceptible people.
+rel_038,secondhand_smoke,asthma_exacerbation,can_trigger,strong,Secondhand smoke is a recognized trigger for asthma attacks.
+rel_039,indoor_allergens_pests,asthma_exacerbation,can_trigger,strong,"Dust mites, pests, pet allergens, and other indoor allergens can trigger asthma symptoms in susceptible people."
+rel_040,chronic_stress,asthma_exacerbation,can_trigger,moderate,Emotional stress can trigger or worsen asthma symptoms in some people.
+rel_041,limited_healthcare_access,asthma,influences_prevention_and_management,moderate,"Access to clinicians, medicines, education, and follow-up affects asthma diagnosis and control."
+rel_042,asthma,asthma_exacerbation,can_lead_to,strong,Asthma can flare into an exacerbation or attack when airway inflammation and narrowing worsen.
+rel_043,asthma,wheezing,can_cause,strong,Wheezing is a common symptom of asthma.
+rel_044,asthma,shortness_of_breath,can_cause,strong,Shortness of breath is a common symptom of asthma.
+rel_045,asthma,chest_tightness,can_cause,strong,Chest tightness is a common symptom of asthma.
+rel_046,asthma,cough,can_cause,strong,"Coughing, especially at night or early morning, is a common asthma symptom."
+rel_047,excess_body_weight,asthma,increases_risk,moderate,Obesity is associated with a higher risk of developing asthma and can worsen asthma symptoms.
+rel_048,lower_diet_quality,high_cholesterol,can_contribute_to,strong,Dietary patterns high in saturated and trans fats can contribute to high cholesterol.
+rel_049,physical_inactivity,high_cholesterol,increases_risk,moderate,Low physical activity can contribute to weight gain and an unfavorable cholesterol profile.
+rel_050,excess_body_weight,high_cholesterol,increases_risk,strong,Obesity is linked with higher LDL and triglycerides and lower HDL cholesterol.
+rel_051,t2d,high_cholesterol,increases_risk,strong,Type 2 diabetes can worsen cholesterol patterns and increase cardiovascular risk.
+rel_052,high_cholesterol,coronary_heart_disease,increases_risk,strong,High cholesterol contributes to plaque buildup and coronary heart disease risk.
+rel_053,high_cholesterol,stroke,increases_risk,strong,High cholesterol can contribute to atherosclerosis and stroke risk.
+rel_054,hypertension,coronary_heart_disease,increases_risk,strong,High blood pressure is a major risk factor for coronary heart disease.
+rel_055,t2d,coronary_heart_disease,increases_risk,strong,Diabetes increases the risk of coronary heart disease.
+rel_056,tobacco_smoking,coronary_heart_disease,increases_risk,strong,Smoking is a major preventable risk factor for coronary heart disease.
+rel_057,physical_inactivity,coronary_heart_disease,increases_risk,strong,Physical inactivity increases heart disease risk.
+rel_058,excess_body_weight,coronary_heart_disease,increases_risk,moderate,Obesity is associated with higher coronary heart disease risk.
+rel_059,coronary_heart_disease,angina_chest_pain,can_cause,strong,Reduced coronary blood flow can cause angina or chest discomfort.
+rel_060,coronary_heart_disease,heart_attack,can_lead_to,strong,Coronary plaque can rupture or obstruct blood flow and cause a heart attack.
+rel_061,tobacco_smoking,copd,increases_risk,strong,Cigarette smoking is the leading cause of COPD in the United States.
+rel_062,secondhand_smoke,copd,increases_risk,strong,Secondhand smoke exposure is a recognized COPD risk factor.
+rel_063,occupational_dust_fume_exposure,copd,increases_risk,strong,"Workplace dusts, fumes, and breathing hazards can increase COPD risk."
+rel_064,poor_air_quality,copd_exacerbation,can_worsen,moderate,Poor outdoor air quality can worsen COPD symptoms and contribute to exacerbations in people with COPD.
+rel_065,asthma,copd,increases_risk,moderate,A history of asthma is associated with higher COPD risk.
+rel_066,copd,cough,can_cause,strong,Chronic cough is a common COPD symptom.
+rel_067,copd,shortness_of_breath,can_cause,strong,Shortness of breath is a common COPD symptom.
+rel_068,copd,copd_exacerbation,can_lead_to,strong,COPD can flare into acute exacerbations with worsening respiratory symptoms.
+rel_069,tobacco_smoking,cancer,increases_risk,strong,Tobacco use is a causal risk factor for multiple cancer types.
+rel_070,excessive_alcohol_use,cancer,increases_risk,strong,Alcohol use increases the risk of several cancer types; risk generally rises with greater exposure.
+rel_071,excess_body_weight,cancer,increases_risk,strong,Overweight and obesity increase the risk of multiple specific cancer types.
+rel_072,physical_inactivity,cancer,associated_with,strong,Higher physical activity is associated with lower risk of several cancer types; inactivity therefore marks higher risk for those cancers.
+rel_073,cancer,fatigue,can_contribute_to,strong,Cancer itself and cancer treatment can cause clinically important fatigue.
+rel_074,chronic_stress,depression,associated_with,moderate,"Long-term stress has been linked with depression risk, but it is one factor within a multifactorial disorder."
+rel_075,social_isolation,depression,associated_with,moderate,Lower social connection and social isolation are associated with greater depression risk.
+rel_076,unemployment,depression,associated_with,strong,Unemployment is consistently associated with increased depressive symptoms and major depression risk.
+rel_077,housing_instability,depression,associated_with,moderate,Housing insecurity and housing disadvantage are associated with worse mental health and depressive symptoms.
+rel_078,t2d,depression,associated_with,moderate,People with chronic diseases such as diabetes have a higher risk of depression; the relationship can operate in both directions.
+rel_079,cancer,depression,associated_with,moderate,"Cancer and depression can co-occur, and some people with cancer have a higher risk of depression."
+rel_080,depression,sleep_disturbance,can_cause,strong,Sleep problems are common symptoms of depression.
+rel_081,depression,difficulty_concentrating,can_cause,strong,Difficulty concentrating and making decisions are common depression symptoms.
+rel_082,depression,fatigue,can_cause,strong,Low energy and fatigue are common depression symptoms.
+rel_083,limited_healthcare_access,depression,influences_prevention_and_management,moderate,"Access to mental health care affects screening, diagnosis, treatment, and follow-up for depression."

@@ -1,0 +1,51 @@
+node_id,node_name,node_type,sdoh_domain,modifiable
+low_income,Low income,structural_determinant,Economic Stability,True
+unemployment,Unemployment,structural_determinant,Economic Stability,True
+housing_instability,Housing instability / unaffordable housing,structural_determinant,Economic Stability,True
+food_insecurity,Food insecurity,social_determinant,Economic Stability,True
+limited_healthy_food_access,Limited access to nutritious food,environmental_determinant,Neighborhood and Built Environment,True
+limited_activity_opportunities,Limited opportunities for physical activity,environmental_determinant,Neighborhood and Built Environment,True
+limited_healthcare_access,Limited health care access,social_determinant,Health Care Access and Quality,True
+lower_diet_quality,Lower diet quality,behavioral_pathway,,True
+physical_inactivity,Physical inactivity,behavioral_pathway,,True
+excess_body_weight,Excess body weight / obesity,behavioral_biological_pathway,,True
+insulin_resistance,Insulin resistance,biological_pathway,,True
+elevated_blood_glucose,Elevated blood glucose,biological_pathway,,True
+t2d,Type 2 diabetes,disease,,
+increased_thirst,Increased thirst,symptom,,
+frequent_urination,Frequent urination,symptom,,
+fatigue,Fatigue,symptom,,
+blurred_vision,Blurred vision,symptom,,
+neuropathy,Neuropathy / nerve damage,complication,,
+kidney_disease,Kidney disease,complication,,
+cardiovascular_disease,Cardiovascular disease (broad category),disease,,
+stroke,Stroke,complication,,
+eye_disease,Diabetic eye disease,complication,,
+foot_problems,Foot problems,complication,,
+high_sodium_intake,High sodium intake,behavioral_pathway,,True
+chronic_stress,Chronic stress,behavioral_biological_pathway,,True
+hypertension,High blood pressure / hypertension,disease,,
+poor_air_quality,Poor outdoor air quality / air pollution,environmental_determinant,Neighborhood and Built Environment,True
+damp_mold_exposure,Dampness and mold exposure,environmental_determinant,Neighborhood and Built Environment,True
+secondhand_smoke,Secondhand smoke exposure,environmental_determinant,Neighborhood and Built Environment,True
+indoor_allergens_pests,Indoor allergens and pests,environmental_determinant,Neighborhood and Built Environment,True
+asthma,Asthma,disease,,
+wheezing,Wheezing,symptom,,
+shortness_of_breath,Shortness of breath,symptom,,
+chest_tightness,Chest tightness,symptom,,
+cough,Cough,symptom,,
+asthma_exacerbation,Asthma attack / exacerbation,complication,,
+high_cholesterol,High cholesterol,biological_pathway,Cardiometabolic Risk,True
+coronary_heart_disease,Coronary heart disease (CHD),disease,Health Conditions,True
+copd,Chronic obstructive pulmonary disease (COPD),disease,Health Conditions,True
+cancer,Cancer,disease,Health Conditions,False
+depression,Depression,disease,Health Conditions,True
+tobacco_smoking,Tobacco smoking,behavioral_pathway,Health Behaviors,True
+excessive_alcohol_use,Excessive alcohol use,behavioral_pathway,Health Behaviors,True
+occupational_dust_fume_exposure,Occupational dust / fume exposure,environmental_determinant,Workplace Environment,True
+social_isolation,Social isolation,social_determinant,Social and Community Context,True
+angina_chest_pain,Angina / chest pain,symptom,,False
+heart_attack,Heart attack (myocardial infarction),complication,,False
+copd_exacerbation,COPD exacerbation / flare-up,complication,,True
+sleep_disturbance,Sleep disturbance,symptom,,True
+difficulty_concentrating,Difficulty concentrating,symptom,,True

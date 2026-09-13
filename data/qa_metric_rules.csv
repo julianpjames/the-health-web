@@ -1,0 +1,27 @@
+dataset,metric_key_pattern,fail_min,fail_max,warn_min,warn_max,rationale
+census,^poverty$,0,100,0,60,Percentages must be 0-100; values above 60 deserve review.
+census,^unemployment$,0,100,0,35,Percentages must be 0-100; very high unemployment deserves review.
+census,^labor_force$,0,100,25,90,Percentages must be 0-100; extreme participation values deserve review.
+census,^snap$,0,100,0,60,Percentages must be 0-100; very high SNAP participation deserves review.
+census,^uninsured$,0,100,0,40,Percentages must be 0-100; very high uninsured estimates deserve review.
+census,^renter_cost_burden$,0,100,0,90,Percentages must be 0-100.
+census,^median_household_income$,0,1000000,5000,500000,Dollar values must be nonnegative; extreme values deserve review.
+census,^median_gross_rent$,0,25000,100,10000,Dollar values must be nonnegative; extreme monthly rent values deserve review.
+cdc,Food insecurity,0,100,0,45,Population prevalence percentages must be 0-100; very high estimates deserve review.
+cdc,Physical inactivity,0,100,0,65,Population prevalence percentages must be 0-100; very high estimates deserve review.
+cdc,Obesity,0,100,0,70,Population prevalence percentages must be 0-100; very high estimates deserve review.
+cdc,routine checkup,0,100,20,100,Population prevalence percentages must be 0-100; unusually low utilization deserves review.
+cdc,Diagnosed diabetes,0,100,0,35,Population prevalence percentages must be 0-100; very high estimates deserve review.
+cdc,Chronic kidney disease,0,100,0,30,Population prevalence percentages must be 0-100; very high estimates deserve review.
+cdc,High blood pressure,0,100,0,70,Population prevalence percentages must be 0-100; very high estimates deserve review.
+cdc,Coronary heart disease,0,100,0,30,Population prevalence percentages must be 0-100; very high estimates deserve review.
+cdc,^Stroke|stroke among,0,100,0,25,Population prevalence percentages must be 0-100; very high estimates deserve review.
+cdc,Frequent mental distress,0,100,0,50,Population prevalence percentages must be 0-100; very high estimates deserve review.
+cdc,Current asthma,0,100,0,35,Population prevalence percentages must be 0-100; very high estimates deserve review.
+cdc,Current smoking,0,100,0,50,Population prevalence percentages must be 0-100; very high estimates deserve review.
+cdc,High cholesterol,0,100,0,75,Population prevalence must be 0-100; very high screened-adult prevalence deserves review.
+cdc,Chronic obstructive pulmonary disease,0,100,0,30,Population prevalence must be 0-100; unusually high COPD estimates deserve review.
+cdc,Cancer \(non-skin\) or melanoma,0,100,0,30,Population prevalence must be 0-100; unusually high broad cancer prevalence deserves review.
+cdc,^Depression$,0,100,0,55,Population prevalence must be 0-100; unusually high depression prevalence deserves review.
+cdc,Binge drinking,0,100,0,50,Population prevalence must be 0-100; unusually high binge-drinking prevalence deserves review.
+cdc,Short sleep duration,0,100,0,70,Population prevalence must be 0-100; unusually high short-sleep prevalence deserves review.

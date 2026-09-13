@@ -1,0 +1,73 @@
+source_id,organization,title,url,accessed_date
+src_cdc_food,CDC,Diabetes and Food Insecurity,https://www.cdc.gov/diabetes/healthy-eating/diabetes-food-insecurity.html,2026-09-12
+src_hp_sdoh,Healthy People 2030,Social Determinants of Health,https://odphp.health.gov/healthypeople/priority-areas/social-determinants-health,2026-09-12
+src_niddk_risk,NIDDK,Risk Factors for Type 2 Diabetes,https://www.niddk.nih.gov/health-information/diabetes/overview/risk-factors-type-2-diabetes,2026-09-12
+src_niddk_t2d,NIDDK,Type 2 Diabetes,https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-2-diabetes,2026-09-12
+src_niddk_prevention,NIDDK,Preventing Type 2 Diabetes,https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-type-2-diabetes,2026-09-12
+src_niddk_treatment,NIDDK,"Insulin, Medicines, & Other Diabetes Treatments",https://www.niddk.nih.gov/health-information/diabetes/overview/insulin-medicines-treatments,2026-09-12
+src_hp_economic,Healthy People 2030,Economic Stability,https://odphp.health.gov/healthypeople/objectives-and-data/browse-objectives/economic-stability,2026-09-12
+src_hp_housing,Healthy People 2030,Housing Instability,https://odphp.health.gov/healthypeople/priority-areas/social-determinants-health/literature-summaries/housing-instability,2026-09-12
+src_hp_access,Healthy People 2030,Health Care Access and Quality,https://odphp.health.gov/healthypeople/objectives-and-data/browse-objectives/health-care-access-and-quality,2026-09-12
+src_cg_built,The Community Guide,Physical Activity: Built Environment Approaches,https://www.thecommunityguide.org/findings/physical-activity-built-environment-approaches.html,2026-09-12
+src_niddk_dpp,NIDDK,Diabetes Prevention Program (DPP),https://www.niddk.nih.gov/about-niddk/research-areas/diabetes/diabetes-prevention-program-dpp,2026-09-12
+src_cdc_hbp_risk,CDC,High Blood Pressure Risk Factors,https://www.cdc.gov/high-blood-pressure/risk-factors/,2026-09-12
+src_nhlbi_hbp_risk,NHLBI,High Blood Pressure - Causes and Risk Factors,https://www.nhlbi.nih.gov/health/high-blood-pressure/causes,2026-09-12
+src_cdc_hbp_facts,CDC,High Blood Pressure Facts,https://www.cdc.gov/high-blood-pressure/data-research/facts-stats/index.html,2026-09-12
+src_cdc_hbp_interventions,CDC,Health and Economic Benefits of High Blood Pressure Interventions,https://www.cdc.gov/nccdphp/priorities/high-blood-pressure.html,2026-09-12
+src_cdc_ckd_hbp,CDC,Chronic Kidney Disease and High Blood Pressure,https://www.cdc.gov/kidney-disease/risk-factors/chronic-kidney-disease-ckd-and-adults-with-high-blood-pressure.html,2026-09-12
+src_nhlbi_hbp_treatment,NHLBI,High Blood Pressure - Treatment,https://www.nhlbi.nih.gov/health/high-blood-pressure/treatment,2026-09-12
+src_nhlbi_asthma_causes,NHLBI,Asthma - Causes and Triggers,https://www.nhlbi.nih.gov/health/asthma/causes,2026-09-12
+src_nhlbi_asthma_symptoms,NHLBI,Asthma - Symptoms,https://www.nhlbi.nih.gov/health/asthma/symptoms,2026-09-12
+src_nhlbi_asthma_treatment,NHLBI,Asthma - Treatment and Action Plan,https://www.nhlbi.nih.gov/health/asthma/treatment-action-plan,2026-09-12
+src_cdc_asthma_control,CDC,Controlling Asthma,https://www.cdc.gov/asthma/control/,2026-09-12
+src_cdc_asthma_living,CDC,Living with Asthma,https://www.cdc.gov/asthma/living-with/index.html,2026-09-12
+src_hp_housing_quality,Healthy People 2030,Quality of Housing,https://odphp.health.gov/healthypeople/priority-areas/social-determinants-health/literature-summaries/quality-housing,2026-09-12
+src_hp_asthma_attacks,Healthy People 2030,Reduce asthma attacks — RD-04,https://odphp.health.gov/healthypeople/objectives-and-data/browse-objectives/respiratory-disease/reduce-asthma-attacks-rd-04,2026-09-12
+src_epa_asthma_triggers,U.S. EPA,Asthma Triggers: Gain Control,https://www.epa.gov/asthma/asthma-triggers-gain-control,2026-09-12
+src_cg_asthma_home_children,The Community Guide,"Asthma: Home-Based Multi-Trigger, Multicomponent Environmental Interventions — Children and Adolescents",https://www.thecommunityguide.org/findings/asthma-home-based-multi-trigger-multicomponent-environmental-interventions-children-adolescents-asthma.html,2026-09-12
+src_cdc_places_outcomes,CDC,PLACES Health Outcomes Measure Definitions,https://www.cdc.gov/places/measure-definitions/health-outcomes.html,2026-09-12
+src_cdc_chol_risk,CDC,Risk Factors for High Cholesterol,https://www.cdc.gov/cholesterol/risk-factors/index.html,2026-09-12
+src_cdc_chol_treat,CDC,Treat and Manage High Cholesterol,https://www.cdc.gov/cholesterol/treatment/index.html,2026-09-12
+src_cdc_chd,CDC,About Coronary Artery Disease (CAD),https://www.cdc.gov/heart-disease/about/coronary-artery-disease.html,2026-09-12
+src_cdc_heart_risk,CDC,Heart Disease Risk Factors,https://www.cdc.gov/heart-disease/risk-factors/index.html,2026-09-12
+src_cdc_copd,CDC,About COPD,https://www.cdc.gov/copd/about/index.html,2026-09-12
+src_cdc_cancer_risk,CDC,Cancer Risk Factors,https://www.cdc.gov/cancer/risk-factors/index.html,2026-09-12
+src_cdc_cancer_screen,CDC,Cancer Screening Tests,https://www.cdc.gov/cancer/prevention/screening.html,2026-09-12
+src_cdc_mental_health,CDC,About Mental Health,https://www.cdc.gov/mental-health/about/index.html,2026-09-12
+src_nimh_depression,NIMH,Depression,https://www.nimh.nih.gov/health/publications/depression,2026-09-12
+src_uspstf_depression,USPSTF,Depression and Suicide Risk in Adults: Screening,https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/screening-depression-suicide-risk-adults,2026-09-12
+src_cdc_chronic_prevention,CDC,Preventing Chronic Diseases: What You Can Do Now,https://www.cdc.gov/chronic-disease/prevention/index.html,2026-09-12
+src_cdc_pa_cancer,CDC,Physical Activity and Cancer,https://www.cdc.gov/physical-activity-basics/health-benefits/lowers-risk-of-cancer.html,2026-09-12
+src_nci_cancer_fatigue,National Cancer Institute,Fatigue and Cancer,https://www.cancer.gov/about-cancer/treatment/side-effects/fatigue,2026-09-12
+src_nccih_stress,NIH NCCIH,Stress,https://www.nccih.nih.gov/health/stress,2026-09-12
+src_pubmed_social_depression,PubMed,Staying connected: An umbrella review of meta-analyses on social connection in depression,https://pubmed.ncbi.nlm.nih.gov/37852587/,2026-09-12
+src_pubmed_unemployment_depression,PubMed,Mental health effects of unemployment and re-employment: a systematic review and meta-analysis of longitudinal studies,https://pubmed.ncbi.nlm.nih.gov/40930969/,2026-09-12
+src_pubmed_housing_mental,PubMed,Exploring the association between housing insecurity and mental health among renters: a systematic review,https://pubmed.ncbi.nlm.nih.gov/41544000/,2026-09-12
+src_nimh_chronic_depression,NIMH,Understanding the Link Between Chronic Disease and Depression,https://www.nimh.nih.gov/health/publications/chronic-illness-mental-health,2026-09-12
+src_cdc_chol_testing,CDC,Testing for Cholesterol,https://www.cdc.gov/cholesterol/testing/index.html,2026-09-12
+src_cdc_tobacco_quit,CDC,How to Quit Smoking,https://www.cdc.gov/tobacco/about/how-to-quit.html,2026-09-12
+src_niosh_controls,CDC/NIOSH,Hierarchy of Controls,https://www.cdc.gov/niosh/hierarchy-of-controls/index.html,2026-09-12
+src_cdc_diabetes_symptoms,CDC,Symptoms of Diabetes,https://www.cdc.gov/diabetes/signs-symptoms/index.html,2026-09-13
+src_niddk_neuropathy,NIDDK,Peripheral Neuropathy,https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/nerve-damage-diabetic-neuropathies/peripheral-neuropathy,2026-09-13
+src_niddk_ckd_manage,NIDDK,Managing Chronic Kidney Disease,https://www.niddk.nih.gov/health-information/kidney-disease/chronic-kidney-disease-ckd/managing,2026-09-13
+src_nei_retinopathy,National Eye Institute,Diabetic Retinopathy,https://www.nei.nih.gov/eye-health-information/eye-conditions-and-diseases/diabetic-retinopathy,2026-09-13
+src_niddk_foot,NIDDK,Diabetes & Foot Problems,https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/foot-problems,2026-09-13
+src_cdc_heart_prevention,CDC,Preventing Heart Disease,https://www.cdc.gov/heart-disease/prevention/index.html,2026-09-13
+src_cdc_stroke_signs,CDC,Signs and Symptoms of Stroke,https://www.cdc.gov/stroke/signs-symptoms/index.html,2026-09-13
+src_cdc_stroke_treatment,CDC,Treatment and Intervention for Stroke,https://www.cdc.gov/stroke/treatment/index.html,2026-09-13
+src_nhlbi_angina,NHLBI,Angina (Chest Pain) - What Is Angina?,https://www.nhlbi.nih.gov/health/angina,2026-09-13
+src_nhlbi_angina_living,NHLBI,Angina (Chest Pain) - Living With,https://www.nhlbi.nih.gov/health/angina/living-with,2026-09-13
+src_cdc_heart_attack,CDC,"About Heart Attack Symptoms, Risk, and Recovery",https://www.cdc.gov/heart-disease/about/heart-attack.html,2026-09-13
+src_nhlbi_copd_treatment,NHLBI,COPD - Treatment,https://www.nhlbi.nih.gov/health/copd/treatment,2026-09-13
+src_nhlbi_insomnia,NHLBI,Insomnia - Treatment,https://www.nhlbi.nih.gov/health/insomnia/treatment,2026-09-13
+src_nimh_help,NIMH,My Mental Health: Do I Need Help?,https://www.nimh.nih.gov/health/publications/my-mental-health-do-i-need-help,2026-09-13
+src_cdc_alcohol_less,CDC,Getting Started With Drinking Less,https://www.cdc.gov/drink-less-be-your-best/getting-started-with-drinking-less/index.html,2026-09-13
+src_cdc_alcohol_harms,CDC,What You Can Do to Lower Your Risk of Alcohol-Related Harms,https://www.cdc.gov/alcohol/about-alcohol-use/lower-alcohol-related-harms.html,2026-09-13
+src_cdc_diabetes_ckd,CDC,Chronic Kidney Disease and Diabetes,https://www.cdc.gov/diabetes/diabetes-complications/diabetes-and-chronic-kidney-disease.html,2026-09-13
+src_cdc_diabetes_heart,CDC,Diabetes and Your Heart,https://www.cdc.gov/diabetes/diabetes-complications/diabetes-and-your-heart.html,2026-09-13
+src_cdc_ckd_risk,CDC,Risk Factors for Chronic Kidney Disease,https://www.cdc.gov/kidney-disease/risk-factors/index.html,2026-09-13
+src_cdc_smoking_cvd,CDC,Health Effects of Cigarettes: Cardiovascular Disease,https://www.cdc.gov/tobacco/about/cigarettes-and-cardiovascular-disease.html,2026-09-13
+src_cdc_smoking_copd,CDC,Health Effects of Cigarettes: Chronic Obstructive Pulmonary Disease (COPD),https://www.cdc.gov/tobacco/about/cigarettes-and-copd.html,2026-09-13
+src_cdc_smoking_cancer,CDC,Health Effects of Cigarettes: Cancer,https://www.cdc.gov/tobacco/about/cigarettes-and-cancer.html,2026-09-13
+src_nci_alcohol_cancer,National Cancer Institute,Alcohol and Cancer Risk Fact Sheet,https://www.cancer.gov/about-cancer/causes-prevention/risk/alcohol/alcohol-fact-sheet,2026-09-13
+src_cdc_obesity_cancer,CDC,Obesity and Cancer,https://www.cdc.gov/cancer/risk-factors/obesity.html,2026-09-13

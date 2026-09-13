@@ -1,0 +1,10 @@
+organization,allowed_domain,authority_level
+CDC,cdc.gov,authoritative
+NIDDK,niddk.nih.gov,authoritative
+NHLBI,nhlbi.nih.gov,authoritative
+Healthy People 2030,odphp.health.gov,authoritative
+The Community Guide,thecommunityguide.org,authoritative
+U.S. EPA,epa.gov,authoritative
+PubMed / NCBI,pubmed.ncbi.nlm.nih.gov,authoritative index
+NIMH,nimh.nih.gov,authoritative
+USPSTF,uspreventiveservicestaskforce.org,authoritative

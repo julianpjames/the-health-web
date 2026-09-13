@@ -1,0 +1,8 @@
+query_id,label,query,cdc_query,active,source_tier
+q_asthma,Asthma — environment & interventions,asthma AND (environment OR exposure OR intervention OR prevention),asthma,TRUE,2
+q_hypertension,Hypertension — risk & interventions,hypertension AND (risk factor OR social determinant OR intervention OR prevention),hypertension,TRUE,2
+q_diabetes,Type 2 diabetes — upstream factors,type 2 diabetes AND (social determinant OR food insecurity OR physical activity OR intervention),type 2 diabetes,TRUE,2
+q_sdoh,Social determinants & chronic disease,social determinants of health AND chronic disease,social determinants health,TRUE,2
+q_copd,COPD — new condition discovery,chronic obstructive pulmonary disease AND (systematic review OR guideline OR risk factor OR intervention),COPD,TRUE,2
+q_depression,Depression — new condition discovery,depression AND (systematic review OR guideline OR social determinant OR intervention),depression,TRUE,2
+q_heart_failure,Heart failure — new condition discovery,heart failure AND (systematic review OR guideline OR risk factor OR intervention),heart failure,TRUE,2

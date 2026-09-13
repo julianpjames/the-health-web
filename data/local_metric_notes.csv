@@ -1,0 +1,34 @@
+node_id,direct_message
+housing_instability,There is not one Census ZIP-level measure that fully captures housing instability. These are direct housing-affordability indicators.
+limited_healthy_food_access,"No strong direct ZIP-level measure of nutritious-food access is currently connected. The values below are related context, not direct measures of healthy-food accessibility."
+limited_activity_opportunities,"No direct ZIP-level measure of sidewalks, recreation access, safe streets, or nearby activity opportunities is currently connected."
+lower_diet_quality,There is no direct ZIP-level measure of overall diet quality in the data sources currently connected to Upstream Health.
+insulin_resistance,Insulin resistance itself is not routinely measured as a ZIP-level population statistic. These are related metabolic proxies.
+elevated_blood_glucose,A reliable ZIP-level prevalence estimate of elevated blood glucose or prediabetes is not currently connected.
+increased_thirst,There is no reliable ZIP-level prevalence estimate for this individual symptom. Showing a community symptom percentage would be misleading.
+frequent_urination,There is no reliable ZIP-level prevalence estimate for this individual symptom. Showing a community symptom percentage would be misleading.
+fatigue,There is no reliable ZIP-level prevalence estimate for this individual symptom. Showing a community symptom percentage would be misleading.
+blurred_vision,There is no reliable ZIP-level prevalence estimate for this individual symptom. Showing a community symptom percentage would be misleading.
+neuropathy,No reliable ZIP-level population estimate of diabetic neuropathy is currently available through the connected datasets.
+eye_disease,No reliable ZIP-level diabetic eye-disease prevalence measure is currently connected.
+foot_problems,No reliable ZIP-level estimate of diabetes-related foot ulcers or foot complications is currently connected.
+high_sodium_intake,"No direct ZIP-level measure of individual sodium intake is currently connected. The value below is related cardiovascular context, not a sodium-intake estimate."
+chronic_stress,No direct ZIP-level measure of chronic stress is currently connected. The values below are related context and should not be interpreted as stress prevalence.
+poor_air_quality,No direct ZIP-level air-quality exposure measure is currently connected to Upstream Health. Air quality changes over time and is better served by a dedicated air-quality data source than by a static proxy.
+damp_mold_exposure,"No direct ZIP-level measure of household dampness or mold exposure is currently connected. The asthma value below is health context, not an exposure estimate."
+secondhand_smoke,No direct ZIP-level estimate of secondhand-smoke exposure is currently connected. Current smoking prevalence is shown only as related community context.
+indoor_allergens_pests,"No direct ZIP-level measure of dust mites, pest allergens, pet allergens, or other indoor asthma triggers is currently connected."
+wheezing,There is no reliable ZIP-level prevalence estimate for this individual symptom in the connected datasets. Showing a symptom percentage would be misleading.
+shortness_of_breath,There is no reliable ZIP-level prevalence estimate for this individual symptom in the connected datasets. Showing a symptom percentage would be misleading.
+chest_tightness,There is no reliable ZIP-level prevalence estimate for this individual symptom in the connected datasets. Showing a symptom percentage would be misleading.
+cough,There is no reliable ZIP-level prevalence estimate for this individual symptom in the connected datasets. Showing a symptom percentage would be misleading.
+asthma_exacerbation,"CDC PLACES provides local adult current-asthma prevalence, but the connected dataset does not provide a direct ZIP-level estimate of asthma attacks or exacerbations."
+occupational_dust_fume_exposure,No direct ZIP-level measure of occupational dust and fume exposure is currently connected.
+social_isolation,No direct ZIP-level social-isolation measure is currently connected in this build.
+angina_chest_pain,No direct ZIP-level prevalence estimate for angina symptoms is currently connected; coronary heart disease is shown as related context.
+heart_attack,No direct ZIP-level heart-attack prevalence estimate is currently connected; coronary heart disease is shown as related context.
+copd_exacerbation,No direct ZIP-level COPD exacerbation measure is currently connected; COPD prevalence is shown as related context.
+difficulty_concentrating,No direct ZIP-level measure of difficulty concentrating as a depression symptom is currently connected.
+sleep_disturbance,Short sleep duration is related local context but does not capture all forms of sleep disturbance.
+excessive_alcohol_use,"Binge drinking is an available local alcohol-risk measure, but it does not represent every form of excessive alcohol use."
+kidney_disease,CDC PLACES discontinued its chronic kidney disease measure beginning with the 2024 release. Upstream Health therefore does not show a current direct ZIP-level CKD prevalence from PLACES; related diabetes and high-blood-pressure estimates are shown only as risk context.
