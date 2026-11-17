@@ -361,7 +361,7 @@ fetch_cdc_places <- function(zip_code) {
   api_url <-
     paste0(
       CDC_PLACES_API,
-      "?$limit=100&$where=",
+      "?$limit=5000&$where=",
       URLencode(
         where_clause,
         reserved = TRUE
