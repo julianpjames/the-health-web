@@ -3801,6 +3801,19 @@ ui <- tagList(
     )
   ),
 
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "redesign.css"),
+    tags$script(HTML("
+      Shiny.addCustomMessageHandler('revealNetwork', function() {
+        var target = document.getElementById('health-network-section');
+        if (!target) return;
+        var reduced = window.matchMedia &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+      });
+    "))
+  ),
+
   tags$a(class = "skip-link", href = "#main-explore-content", "Skip to Main Content"),
 
   navbarPage(
@@ -3822,27 +3835,60 @@ ui <- tagList(
           tags$strong("Educational information only. "),
           "This project is a collection and visualization of public-health and medical sources. It is not medical advice, diagnosis, or treatment from trained medical professionals. For personal medical decisions, talk with a qualified health professional."
         ),
-      div(
-          class = "title-box",
-          h1("The Health Web")
-        ),
-
         div(
-          class = "mission-line",
-          "A growing database of health information built to be both accurate and actionable."
-        ),
-  
-        div(
-          class = "subtitle",
+          class = "health-editorial-hero",
+          div(class = "health-kicker", "An interactive atlas of public health"),
+          h1("Health is connected to ", tags$em("everything.")),
           p(
-            paste(
-              "Explore how social conditions, behaviors,",
-              "biology, disease, and health outcomes connect."
-            )
+            class = "health-lede",
+            "Where we live, what we breathe, the opportunities around us — all of it shapes health. Follow the connections between daily life, social conditions, and health outcomes."
+          ),
+          div(
+            class = "health-journey",
+            div(class = "health-journey-label", "Choose a thread to follow"),
+            div(
+              class = "health-journey-grid",
+              actionButton(
+                "journey_food", 
+                label = tagList(
+                  span(class = "health-journey-no", "01 / EVERYDAY LIFE"),
+                  span(class = "health-journey-name", "Food insecurity"),
+                  span(class = "health-journey-arrow", "↗")
+                ),
+                class = "health-journey-card"
+              ),
+              actionButton(
+                "journey_diabetes",
+                label = tagList(
+                  span(class = "health-journey-no", "02 / HEALTH CONDITIONS"),
+                  span(class = "health-journey-name", "Type 2 diabetes"),
+                  span(class = "health-journey-arrow", "↗")
+                ),
+                class = "health-journey-card"
+              ),
+              actionButton(
+                "journey_asthma",
+                label = tagList(
+                  span(class = "health-journey-no", "03 / OUR ENVIRONMENT"),
+                  span(class = "health-journey-name", "Asthma"),
+                  span(class = "health-journey-arrow", "↗")
+                ),
+                class = "health-journey-card"
+              )
+            ),
+            p(class = "health-editorial-note",
+              "Each starting point reveals influences, pathways, and outcomes in the network below.")
           )
         ),
-  
-  
+        div(
+          id = "health-network-section",
+          class = "health-explore-intro",
+          div(
+            h2("Explore the connections"),
+            p("Start with a topic above or search the network. Select any concept or relationship to learn why it matters and where the evidence comes from.")
+          )
+        ),
+
         # ==========================================================
         # NEW SEARCH AREA
         # ==========================================================
@@ -4789,6 +4835,29 @@ server <- function(
     })
   
   
+  # Guided entry points reuse the existing search/focus interaction.
+  # Avoid parallel graph logic so future network improvements stay consistent.
+  journey_topics <- c(
+    journey_food = "food_insecurity",
+    journey_diabetes = "t2d",
+    journey_asthma = "asthma"
+  )
+  for (button_id in names(journey_topics)) {
+    local({
+      current_button <- button_id
+      current_node <- unname(journey_topics[[button_id]])
+      observeEvent(input[[current_button]], {
+        updateSelectizeInput(session, "node_search", selected = current_node)
+        selected_type("node")
+        selected_id(current_node)
+        searched_zip(NULL)
+        live_local_data(NULL)
+        focus_node_network(current_node, degrees = 2)
+        session$sendCustomMessage("revealNetwork", list())
+      }, ignoreInit = TRUE)
+    })
+  }
+
   # ==========================================================
   # SEARCH
   # ==========================================================
