@@ -1,6 +1,7 @@
 library(shiny)
 library(visNetwork)
 library(jsonlite)
+source("cdc_selection.R")
 
 
 # ============================================================
@@ -684,39 +685,9 @@ format_dollars <- function(value) {
 }
 
 
-find_cdc_row <- function(
-    data,
-    pattern
-) {
-  
-  if (
-    is.null(data) ||
-    nrow(data) == 0 ||
-    !"measure" %in% names(data)
-  ) {
-    return(NULL)
-  }
-  
-  matches <-
-    which(
-      grepl(
-        pattern,
-        data$measure,
-        ignore.case = TRUE
-      )
-    )
-  
-  if (length(matches) == 0) {
-    return(NULL)
-  }
-  
-  data[
-    matches[1],
-    ,
-    drop = FALSE
-  ]
+find_cdc_row <- function(data, pattern) {
+  select_cdc_measure_row(data, pattern)
 }
-
 
 cdc_metric <- function(
     data,
