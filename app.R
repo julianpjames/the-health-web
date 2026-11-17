@@ -1707,12 +1707,68 @@ vis_edges <- data.frame(
 # ============================================================
 # SEARCH CHOICES
 # ============================================================
+atlas_starter_nodes <- c("low_income", "food_insecurity", "lower_diet_quality",
+  "limited_healthcare_access", "asthma", "wheezing", "t2d", "kidney_disease")
+atlas_starter_nodes <- intersect(atlas_starter_nodes, vis_nodes$id)
+
+compact_atlas_nodes <- function(graph_nodes) {
+  for (stage in unique(graph_nodes$flowStage)) {
+    visible <- which(graph_nodes$flowStage == stage & !graph_nodes$hidden)
+    if (!length(visible)) next
+    ordered <- visible[order(graph_nodes$y[visible])]
+    graph_nodes$y[ordered] <- (seq_along(ordered) - (length(ordered) + 1) / 2) * 76
+  }
+  graph_nodes
+}
+
+vis_nodes$x <- unname(c(upstream = -450, pathway = -150,
+  condition = 150, outcome = 450)[vis_nodes$flowStage])
+vis_nodes <- compact_atlas_nodes(vis_nodes)
+atlas_node_fills <- c("#e0eddf", "#e0eaf3", "#efe6d7", "#e9e5f1")
+atlas_node_outlines <- c("#759486", "#7896a9", "#a78a58", "#9286aa")
+atlas_stage_index <- match(vis_nodes$flowStage, c("upstream", "pathway", "condition", "outcome"))
+atlas_stage_index[is.na(atlas_stage_index)] <- 1L
+vis_nodes$color.background <- atlas_node_fills[atlas_stage_index]
+vis_nodes$color.border <- atlas_node_outlines[atlas_stage_index]
+vis_nodes$color.highlight.background <- "#cce5da"
+vis_nodes$color.highlight.border <- "#125e52"
+vis_nodes$color.hover.background <- "#e8f1ea"
+vis_nodes$color.hover.border <- "#125e52"
+vis_nodes$font.color <- "#182c29"
+vis_nodes$font.size <- 24
+vis_nodes$title <- NULL
+vis_edges$color <- "#829890"
+vis_edges$width <- 1.45
+vis_edges$title <- paste(edges_with_sources$from_name, "→", edges_with_sources$to_name)
+
 
 search_choices <-
   setNames(
     nodes$node_id,
     nodes$node_name
   )
+
+atlas_button <- function(label, input_id, id, class = "atlas-row", description = NULL) {
+  tags$button(type = "button", class = class, `data-atlas-input` = input_id,
+    `data-atlas-id` = id, label, if (!is.null(description)) tags$small(description))
+}
+
+atlas_connections <- function(records, label, name_column) {
+  if (nrow(records) == 0) return(NULL)
+  rows <- lapply(seq_len(nrow(records)), function(i) {
+    tags$li(atlas_button(records[[name_column]][i], "clicked_edge",
+      records$relationship_id[i], description = records$short_explanation[i]))
+  })
+  visible <- head(rows, 4L)
+  remaining <- tail(rows, max(0L, length(rows) - length(visible)))
+  tags$section(class = "connections",
+    tags$h4(label), tags$ul(class = "atlas-rows", visible),
+    if (length(remaining)) tags$details(
+      tags$summary(paste("Show", length(remaining), "more")),
+      tags$ul(class = "atlas-rows", remaining)
+    )
+  )
+}
 
 
 # ============================================================
@@ -3800,6 +3856,137 @@ ui <- tagList(
       ")
     )
   ),
+  tags$head(
+    tags$link(rel = "stylesheet", href = "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Spectral:wght@500;600&display=swap"),
+    tags$style(HTML("
+      :root { --atlas-paper:#f6f4ec; --atlas-ink:#182c29; --atlas-muted:#4b625b;
+              --atlas-line:#cdd7cf; --atlas-accent:#125e52; }
+      body:has(.tab-pane.active .atlas-page),
+      body:has(.tab-pane.active .atlas-page) > .container-fluid { background:var(--atlas-paper) !important; color:var(--atlas-ink); }
+      body:has(.tab-pane.active .atlas-page) .navbar,
+      body:has(.tab-pane.active .atlas-page) .navbar .container-fluid { background:#18362f !important; }
+      body:has(.tab-pane.active .atlas-page) .navbar a { color:#f4f6ec !important; }
+      .atlas-page, .atlas-page button, .atlas-page input { font-family:Instrument Sans, system-ui, sans-serif; }
+      .atlas-page { max-width:1700px; margin:auto; padding:16px 12px 0; color:var(--atlas-ink); }
+      .atlas-toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+      .atlas-search-status:not(:empty) { display:block; font-size:13px; color:var(--atlas-muted); }
+      .atlas-toolbar .graph-search-input { flex:1 1 260px; max-width:530px; min-width:0; }
+      .atlas-toolbar .form-group { margin:0; width:100%; }
+      .atlas-toolbar .selectize-input, .atlas-toolbar .selectize-dropdown,
+      .atlas-toolbar .selectize-input input { color:var(--atlas-ink) !important; }
+      .atlas-toolbar .selectize-input, .atlas-toolbar .selectize-dropdown {
+        background:#fffef8 !important; border-color:#aabeb4 !important; border-radius:5px !important;
+      }
+      .atlas-toolbar .selectize-dropdown .option { color:var(--atlas-ink) !important; }
+      .atlas-toolbar .selectize-dropdown .active { background:#d9eae0 !important; color:var(--atlas-ink) !important; }
+      .atlas-page .atlas-control, .atlas-page .map-control-btn {
+        background:#fffef8; color:var(--atlas-accent); border:1px solid #aabeb4;
+        border-radius:5px; min-height:44px; padding:8px 13px; box-shadow:none;
+      }
+      .atlas-page :is(button,a,summary):focus-visible { outline:3px solid #126b9a; outline-offset:2px; }
+      .atlas-switch { display:flex; gap:4px; }
+      .atlas-page .atlas-control[aria-pressed=true] { background:var(--atlas-accent); color:white; }
+      .atlas-help { position:relative; width:auto; margin:0; }
+      .atlas-help summary { cursor:pointer; display:flex; align-items:center; }
+      .atlas-help p { position:absolute; top:50px; right:0; width:min(280px,80vw); z-index:15;
+        padding:14px; background:#fffef8; border:1px solid var(--atlas-line); box-shadow:0 4px 12px #182c2926; }
+      .atlas-workspace { display:grid; grid-template-columns:minmax(0,1fr); height:calc(100dvh - 178px); min-height:420px;
+        border:1px solid var(--atlas-line); background:#fffef8; border-radius:8px; overflow:hidden; }
+      .atlas-workspace:has(.side-panel) { grid-template-columns:minmax(0,1fr) clamp(320px,31vw,400px); }
+      .atlas-map { min-width:0; min-height:0; display:flex; flex-direction:column; }
+      .atlas-stages { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); padding:0 10px;
+        border-bottom:1px solid var(--atlas-line); background:#efeee4; }
+      .atlas-stages span { padding:10px 4px; text-align:center; color:var(--atlas-muted); font-size:12px; }
+      .atlas-page .network-wrapper { flex:1; min-height:0; margin:0; position:relative; overflow:hidden; }
+      .atlas-page .network-box { position:absolute; inset:0; padding:0; margin:0; border:0; border-radius:0; background:#f6f4ec; box-shadow:none; }
+      .atlas-page #health_network { height:100% !important; }
+      .atlas-page .map-controls { display:flex; gap:4px; flex-direction:row; padding:0; border:0; box-shadow:none; background:transparent; }
+      .atlas-page .map-control-btn { min-width:44px; padding:0; }
+      .atlas-toolbar label { color:var(--atlas-ink); font-size:13px; margin-bottom:3px; }
+      .atlas-toolbar { align-items:flex-end; }
+      .atlas-toolbar .selectize-input { min-height:44px; }
+      .atlas-edge-endpoints { margin-top:12px; }
+      .atlas-evidence-meta { color:var(--atlas-muted); font-size:13px; }
+      .atlas-page .network-loading { background:var(--atlas-paper); }
+      .atlas-page .network-loading-card { background:#fffef8; color:var(--atlas-ink); border-color:var(--atlas-line); }
+      .atlas-map-note { position:absolute; z-index:5; bottom:12px; left:12px; color:var(--atlas-muted); background:#fffef8;
+        padding:5px 8px; border:1px solid var(--atlas-line); border-radius:4px; font-size:12px; pointer-events:none; }
+      .atlas-list { display:none; min-width:0; overflow:auto; padding:20px clamp(15px,4vw,42px); }
+      .atlas-page[data-view=list] .atlas-map { display:none; }
+      .atlas-page[data-view=list] .atlas-list { display:block; }
+      .atlas-page #side_panel { min-height:0; overflow:auto; }
+      .atlas-page #side_panel:not(:empty) { border-left:1px solid var(--atlas-line); }
+      .atlas-page .side-panel { position:static; inset:auto; width:auto; max-width:none; max-height:none;
+        overflow:visible; padding:20px 22px; background:#fffef8; color:var(--atlas-ink); border:0;
+        border-radius:0; box-shadow:none; backdrop-filter:none; }
+      .atlas-page .side-panel :is(h2,h4,h5,p,li,summary,label) { color:var(--atlas-ink); }
+      .atlas-page .side-panel :is(.side-panel-title,.relationship-big-path), .atlas-list h2 {
+        font:600 29px/1.18 Spectral, Georgia, serif; color:var(--atlas-ink);
+      }
+      .atlas-page .side-panel :is(.relationship-big-arrow,.why-label,.panel-node-badge,.relationship-panel-badge) { color:var(--atlas-accent); }
+      .atlas-page .side-panel :is(.panel-node-badge,.relationship-panel-badge) { background:#e3eee6; border-color:#b7cdc0; }
+      .atlas-page .side-panel :is(.panel-description,.why-text,.local-help-subtitle,.intervention-summary,.intervention-intro,.detail-content,.source-line) { color:var(--atlas-muted); }
+      .atlas-page .side-panel :is(.why-box,.stat-card,.intervention-card,.local-help-box,.evidence-section,.connections) {
+        background:transparent; border:0; border-top:1px solid var(--atlas-line); border-radius:0;
+        box-shadow:none; padding:13px 0; margin:13px 0 0; color:var(--atlas-ink);
+      }
+      .atlas-page .side-panel :is(.intervention-name,.level-heading,.local-help-title) { color:var(--atlas-ink); }
+      .atlas-page .side-panel .level-heading { border-color:var(--atlas-line); }
+      .atlas-page .side-panel .stat-card div { color:var(--atlas-ink) !important; }
+      .atlas-page .side-panel a { color:var(--atlas-accent); }
+      .atlas-page .side-panel .source-button { background:#e3eee6; border-color:#b7cdc0; }
+      .atlas-page .close-panel-button { background:transparent; color:var(--atlas-accent); font-size:20px; min-width:44px; min-height:44px; }
+      .atlas-page .atlas-rows { list-style:none; margin:0; padding:0; }
+      .atlas-page .atlas-row { display:block; text-align:left; width:100%; border:0;
+        border-bottom:1px solid var(--atlas-line); background:transparent; color:var(--atlas-accent);
+        font-weight:600; padding:10px 22px 10px 0; min-height:44px; position:relative; }
+      .atlas-row::after { content:'›'; position:absolute; right:4px; top:10px; }
+      .atlas-row:hover { background:#ecf2e9; }
+      .atlas-row small { display:block; color:var(--atlas-muted); font-size:13px; font-weight:400; }
+      .atlas-start { display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin:0 0 12px; }
+      .atlas-start span { margin-right:3px; color:var(--atlas-muted); }
+      .atlas-start .atlas-control { min-height:36px; padding:5px 9px; }
+      .atlas-footer { color:var(--atlas-muted); font-size:12px; margin:7px 0; }
+      body:has(.tab-pane.active .atlas-page) .vis-tooltip { background:#fffef8 !important; color:#182c29 !important;
+        border:1px solid #aabeb4 !important; font:500 13px Instrument Sans, sans-serif !important; padding:7px 9px !important; }
+      @media (max-width:760px) {
+        .atlas-page { padding:12px 0 0; }
+        .atlas-workspace, .atlas-workspace:has(.side-panel) { height:auto; min-height:0; grid-template-columns:minmax(0,1fr); }
+        .atlas-map { min-height:350px; }
+        .atlas-page:not([data-view]) .atlas-map { display:none; }
+        .atlas-page:not([data-view]) .atlas-list { display:block; }
+        .atlas-page:not([data-view=map]) .atlas-workspace:has(.side-panel) .atlas-list { display:none; }
+        .atlas-page #side_panel:not(:empty) { border-left:0; border-top:1px solid var(--atlas-line); }
+        .atlas-page .side-panel { padding:16px; }
+        .atlas-stages span { font-size:10px; }
+        .atlas-help p { right:auto; left:0; }
+      }
+    ")),
+    tags$script(HTML("
+      document.addEventListener('click', function(event) {
+        var mode = event.target.closest('[data-atlas-view]');
+        if (event.target.closest('#show_full_network')) mode = document.querySelector('[data-atlas-view=map]');
+        var target = event.target.closest('[data-atlas-input]');
+        if (mode) {
+          var page = mode.closest('.atlas-page');
+          page.dataset.view = mode.dataset.atlasView;
+          page.querySelectorAll('[data-atlas-view]').forEach(function(button) {
+            button.setAttribute('aria-pressed', String(button === mode));
+          });
+        }
+        if (target) {
+          Shiny.setInputValue(target.dataset.atlasInput, target.dataset.atlasId, {priority:'event'});
+        }
+      });
+      document.addEventListener('DOMContentLoaded', function() {
+        var page = document.querySelector('.atlas-page');
+        if (!page) return;
+        var initialView = matchMedia('(max-width:760px)').matches ? 'list' : 'map';
+        page.dataset.view = initialView;
+        page.querySelector('[data-atlas-view=' + initialView + ']').setAttribute('aria-pressed', 'true');
+      });
+    "))
+  ),
 
   tags$a(class = "skip-link", href = "#main-explore-content", "Skip to Main Content"),
 
@@ -3816,316 +4003,90 @@ ui <- tagList(
       value = "explore",
       div(
         id = "main-explore-content",
-        class = "site-explore-page",
-        div(
-          class = "medical-disclaimer-banner",
-          tags$strong("Educational information only. "),
-          "This project is a collection and visualization of public-health and medical sources. It is not medical advice, diagnosis, or treatment from trained medical professionals. For personal medical decisions, talk with a qualified health professional."
-        ),
-      div(
-          class = "title-box",
-          h1("The Health Web")
-        ),
-
-        div(
-          class = "mission-line",
-          "A growing database of health information built to be both accurate and actionable."
-        ),
-  
-        div(
-          class = "subtitle",
-          p(
-            paste(
-              "Explore how social conditions, behaviors,",
-              "biology, disease, and health outcomes connect."
-            )
-          )
-        ),
-  
-  
-        # ==========================================================
-        # NEW SEARCH AREA
-        # ==========================================================
-  
-        div(
-    
-          class = "graph-search-area",
-    
-          div(
-            class = "graph-search-label",
-            "Search the Health Network"
-          ),
-    
-          div(
-      
-            class = "graph-search-row",
-      
-            div(
-        
-              class = "graph-search-input",
-        
-              selectizeInput(
-                "node_search",
-                label = NULL,
-                choices = c(
-                  "Search a condition, symptom, risk factor, or determinant..." = "",
-                  search_choices
-                ),
-                selected = "",
-                options =
-                  list(
-                    placeholder =
-                      "Search a condition, symptom, risk factor, or determinant...",
-                    allowEmptyOption = TRUE
-                  )
-              )
-            ),
-      
-            actionButton(
-              "show_full_network",
-              "Clear Focus",
-              class = "full-network-btn"
-            ),
-
-            if (UPSTREAM_ADMIN_MODE) {
-              tagList(
-                actionButton(
-                  "run_qa",
-                  "Run QA check",
-                  class = "qa-button"
-                ),
-                actionButton(
-                  "open_discovery_inbox",
-                  "Discovery Inbox",
-                  class = "qa-button"
-                ),
-                if (AUTO_EXPANSION_AVAILABLE) {
-                  actionButton(
-                    "open_expansion_queue",
-                    "Expansion Queue",
-                    class = "qa-button"
-                  )
-                }
-              )
-            }
-          ),
-    
-          div(
-            class = "graph-mode-status",
-            textOutput(
-              "graph_mode_text",
-              inline = TRUE
-            )
-          )
-        ),
-  
-  
-        div(
-          class = "hint",
-          p(
-            paste(
-              "Read the network roughly left to right: upstream context → pathways → health conditions → outcomes.",
-              "Search or click a concept to highlight direct upstream influences and downstream effects.",
-              "Hover over any arrow to understand the connection."
-            )
-          )
-        ),
-  
-        div(
-          class = "focus-label",
-          textOutput("focus_text")
-        ),
-  
-        actionButton(
-          "reset_view",
-          "Return to Full Network",
-          class = "reset-button"
-        ),
-  
-        div(
-    
-          class = "network-wrapper",
-
-          div(
-            class = "flow-key",
-            div(class = "flow-key-title", "How to Read the Map"),
-            div(
-              class = "flow-key-path",
-              span(class = "flow-key-step", "1  Upstream Context"),
-              span(class = "flow-key-arrow", "→"),
-              span(class = "flow-key-step", "2  Intermediate Pathways"),
-              span(class = "flow-key-arrow", "→"),
-              span(class = "flow-key-step", "3  Health Conditions"),
-              span(class = "flow-key-arrow", "→"),
-              span(class = "flow-key-step", "4  Outcomes")
-            ),
-            div(
-              class = "flow-key-note",
-              span(class = "flow-key-blue", "Blue arrows"),
-              " flow into the selected concept; ",
-              span(class = "flow-key-gold", "gold arrows"),
-              " flow out. Moving dots travel downstream along connections; hover or click an arrow to pause its flow. Drag the background to move around; nodes stay fixed."
-            )
-          ),
-
-          div(
-      
-            class = "network-box",
-
-            div(
-              id = "network_loading",
-              class = "network-loading",
-              div(class = "network-loading-card", "Building the health network…")
-            ),
-      
-            visNetworkOutput(
-              "health_network",
-              height = "1200px"
-            )
-          ),
-    
-    
-          # ========================================================
-          # COLOR KEY
-          # ========================================================
-    
-          div(
-      
-            class = "color-key map-glass",
-      
-            div(
-              class = "color-key-title",
-              "Network Key"
-            ),
-      
-            div(
-        
-              class = "color-key-grid",
-        
-              div(
-                class = "color-key-item",
-                span(
-                  class = "key-dot key-structural"
-                ),
-                span("Structural")
-              ),
-        
-              div(
-                class = "color-key-item",
-                span(
-                  class = "key-dot key-social"
-                ),
-                span("Social")
-              ),
-        
-              div(
-                class = "color-key-item",
-                span(
-                  class = "key-dot key-environment"
-                ),
-                span("Environment")
-              ),
-        
-              div(
-                class = "color-key-item",
-                span(
-                  class = "key-dot key-behavioral"
-                ),
-                span("Behavior")
-              ),
-        
-              div(
-                class = "color-key-item",
-                span(
-                  class = "key-dot key-biological"
-                ),
-                span("Biology")
-              ),
-        
-              div(
-                class = "color-key-item",
-                span(
-                  class = "key-dot key-disease"
-                ),
-                span("Disease")
-              ),
-        
-              div(
-                class = "color-key-item",
-                span(
-                  class = "key-dot key-symptom"
-                ),
-                span("Symptoms")
-              ),
-        
-              div(
-                class = "color-key-item",
-                span(
-                  class = "key-dot key-complication"
-                ),
-                span("Complications")
-              )
-            )
-          ),
-    
-    
-          # ========================================================
-          # CUSTOM ZOOM CONTROLS
-          # ========================================================
-    
-          div(
-      
-            class = "map-controls map-glass",
-      
-            tags$button(
-              id = "zoom_in_btn",
-              class = "map-control-btn",
-              `type` = "button",
-              title = "Zoom in",
-        
-              tags$span(
-                class = "zoom-symbol",
-                "+"
-              )
-            ),
-      
-      
-            tags$button(
-              id = "zoom_out_btn",
-              class = "map-control-btn",
-              `type` = "button",
-              title = "Zoom out",
-        
-              tags$span(
-                class = "zoom-symbol",
-                "−"
-              )
-            ),
-      
-      
-            div(
-              class = "control-divider"
-            ),
-      
-      
-            tags$button(
-              id = "map_home_btn",
-              class = "map-control-btn",
-              `type` = "button",
-              title = "Return to Full Network",
-        
-              tags$span(
-                class = "home-symbol",
-                "⌂"
-              )
-            )
-          ),
-    
-    
-          uiOutput(
-            "side_panel"
-          )
-        )
+         class = "atlas-page",
+         tabindex = "-1",
+         tags$div(
+           class = "atlas-toolbar",
+           tags$div(
+             class = "graph-search-input",
+             selectizeInput("node_search", "Search concepts",
+               choices = c(setNames("", ""), search_choices), selected = "",
+               options = list(
+                 placeholder = "Try food insecurity or diabetes",
+                 onType = I("function(query) {
+                   var status = document.getElementById('atlas-search-status');
+                   status.textContent = query.trim() && !this.search(query.trim()).items.length
+                     ? 'No matching concepts' : '';
+                 }"),
+                 onChange = I("function() {
+                   document.getElementById('atlas-search-status').textContent = '';
+                 }")
+               )
+             ),
+             tags$span(id = "atlas-search-status", role = "status", class = "atlas-search-status")
+           ),
+           actionButton("show_full_network", "Full map", class = "atlas-control"),
+           tags$div(
+             class = "atlas-switch", role = "group", `aria-label` = "Explorer view",
+             tags$button(type = "button", class = "atlas-control", `data-atlas-view` = "map", `aria-pressed` = "false", "Map"),
+             tags$button(type = "button", class = "atlas-control", `data-atlas-view` = "list", `aria-pressed` = "false", "List")
+           ),
+           tags$details(
+             class = "atlas-help",
+             tags$summary(class = "atlas-control", "Help"),
+             tags$p("Read from context toward outcomes. Select a concept or arrow to explore it. Blue arrows point into the selected concept and ochre arrows point out.")
+           ),
+           if (UPSTREAM_ADMIN_MODE) {
+             tagList(
+               actionButton("run_qa", "Run QA check", class = "qa-button"),
+               actionButton("open_discovery_inbox", "Discovery Inbox", class = "qa-button"),
+               if (AUTO_EXPANSION_AVAILABLE) actionButton("open_expansion_queue", "Expansion Queue", class = "qa-button")
+             )
+           }
+         ),
+         tags$div(
+           class = "atlas-start",
+           tags$span("Start with"),
+           lapply(c("Food insecurity", "Asthma", "Type 2 diabetes"), function(name) {
+             id <- unname(search_choices[name])
+             if (!is.na(id)) atlas_button(name, "clicked_node", id, "atlas-control")
+           })
+         ),
+         tags$div(
+           class = "atlas-workspace",
+           tags$section(
+             class = "atlas-map", `aria-label` = "Health network map",
+             tags$div(class = "atlas-stages",
+               tags$span("Upstream context"), tags$span("Pathways"),
+               tags$span("Health conditions"), tags$span("Outcomes")
+             ),
+             tags$div(
+               class = "network-wrapper",
+               tags$div(
+                 class = "network-box",
+                 tags$div(id = "network_loading", class = "network-loading",
+                   tags$div(class = "network-loading-card", "Loading the health network…")
+                 ),
+                 visNetworkOutput("health_network", height = "100%")
+               ),
+               tags$div(class = "atlas-map-note", "Drag to pan"),
+               tags$div(
+                 class = "map-controls",
+                 tags$button(type = "button", id = "zoom_in_btn", class = "map-control-btn", `aria-label` = "Zoom in", "+"),
+                 tags$button(type = "button", id = "zoom_out_btn", class = "map-control-btn", `aria-label` = "Zoom out", "−")
+               )
+             )
+           ),
+           tags$section(
+             class = "atlas-list", `aria-label` = "Browse concepts",
+             tags$h2("Browse concepts"),
+             tags$ul(class = "atlas-rows", lapply(sort(names(search_choices)), function(name) {
+               tags$li(atlas_button(name, "clicked_node", unname(search_choices[name])))
+             }))
+           ),
+           uiOutput("side_panel")
+         ),
+         tags$p(class = "atlas-footer", "Educational information only. For personal medical decisions, consult a qualified health professional.")
       )
     ),
 
@@ -4163,17 +4124,17 @@ ui <- tagList(
           div(
             class = "info-card",
             h3("Nodes"),
-            p("Each node represents one concept. Node color describes the kind of concept — for example social, environmental, behavioral, biological, disease, symptom, or complication.")
+            p("Each node represents a concept. Its column and fill show whether it represents upstream context, a pathway, a condition, or an outcome. Use List to browse without the map.")
           ),
           div(
             class = "info-card",
             h3("Arrows"),
-            p("Arrows show the direction of the mapped relationship. Click or hover an arrow to read why the concepts are linked, how the pathway works, supporting statistics when appropriate, and the evidence source.")
+            p("Select an arrow or a connection row to see the claim, relationship type, supporting evidence, and original source.")
           ),
           div(
             class = "info-card",
             h3("Search and Focus"),
-            p("Searching or clicking a concept keeps the full network in place but fades unrelated information. Blue arrows flow into the selected concept; gold arrows flow out toward downstream effects.")
+            p("Search or select a concept to see its direct connections. Blue arrows point into the concept and ochre arrows point out. Choose Full map to restore the overview.")
           ),
           div(
             class = "info-card",
@@ -4290,13 +4251,10 @@ ui <- tagList(
             "Please do not include private medical information, diagnoses, or other sensitive personal details. This form is for project feedback, not medical questions."
           ),
           if (UPSTREAM_PUBLIC_DEPLOYMENT && !nzchar(UPSTREAM_FEEDBACK_ENDPOINT)) {
-            div(
-              class = "feedback-note",
-              tags$strong("Launch setup note: "),
-              "The public feedback endpoint has not been connected yet, so submissions are temporarily disabled on this deployment."
-            )
+            div(class = "feedback-note", "Feedback submissions are temporarily unavailable.")
+          } else {
+            actionButton("submit_feedback", "Send Feedback", class = "qa-button")
           },
-          actionButton("submit_feedback", "Send Feedback", class = "qa-button"),
           uiOutput("feedback_status_ui")
         )
       )
@@ -4374,7 +4332,7 @@ server <- function(
   auto_expansion_busy <- reactiveVal(FALSE)
   auto_selected_package <- reactiveVal(NULL)
   
-  graph_mode <- reactiveVal("full")
+  edge_return_node <- reactiveVal(NULL)
   graph_center <- reactiveVal(NULL)
   site_content_rv <- reactiveVal(site_content)
   feedback_rv <- reactiveVal(feedback_submissions)
@@ -4567,294 +4525,91 @@ server <- function(
   # ==========================================================
   # GRAPH PROXY HELPERS
   #
-  # IMPORTANT:
-  # Search now swaps in a fully styled subset of the graph
-  # instead of hiding/unhiding existing nodes. This preserves
-  # every node's custom background, border, hover, and font
-  # styling when the network changes.
-  # ==========================================================
-
-  # Build a full-network focus view. Nothing disappears: the selected
-  # concept and its nearby pathways become prominent while the rest of
-  # the graph fades into context.
-  build_focus_graph <- function(center_id, degrees = 2) {
-
-    one_hop <- get_neighborhood(center_id, 1)
-    two_hop <- get_neighborhood(center_id, degrees)
-
+  # Update graph styling in place to preserve fixed node positions.
+  build_focus_graph <- function(center_id, edge_id = NULL) {
+    direct <- vis_edges$from == center_id | vis_edges$to == center_id
+    if (!is.null(edge_id)) direct <- direct | vis_edges$id == edge_id
+    visible <- unique(c(center_id, vis_edges$from[direct], vis_edges$to[direct]))
     focused_nodes <- vis_nodes
     focused_edges <- vis_edges
-
-    is_secondary <- focused_nodes$id %in% setdiff(two_hop, one_hop)
-    is_context <- !(focused_nodes$id %in% two_hop)
-
-    incoming_primary <-
-      focused_edges$to == center_id
-
-    outgoing_primary <-
-      focused_edges$from == center_id
-
-    incoming_nodes <-
-      unique(
-        focused_edges$from[incoming_primary]
-      )
-
-    outgoing_nodes <-
-      unique(
-        focused_edges$to[outgoing_primary]
-      )
-
-    # The whole graph remains visible. Unrelated concepts become quiet context.
-    focused_nodes$font.color[is_context] <- "rgba(224,232,235,0.12)"
-    focused_nodes$color.background[is_context] <- "rgba(35,42,45,0.08)"
-    focused_nodes$color.border[is_context] <- "rgba(122,145,153,0.08)"
-    focused_nodes$color.highlight.background[is_context] <- "rgba(60,70,74,0.14)"
-    focused_nodes$color.highlight.border[is_context] <- "rgba(145,170,180,0.16)"
-    focused_nodes$color.hover.background[is_context] <- "rgba(60,70,74,0.14)"
-    focused_nodes$color.hover.border[is_context] <- "rgba(145,170,180,0.16)"
-    focused_nodes$borderWidth[is_context] <- 0.7
-
-    # Two-hop context stays readable, but secondary to the direct pathway.
-    focused_nodes$font.color[is_secondary] <- "rgba(228,236,238,0.52)"
-    focused_nodes$color.background[is_secondary] <- "rgba(42,50,53,0.42)"
-    focused_nodes$color.border[is_secondary] <- "rgba(135,157,165,0.42)"
-    focused_nodes$borderWidth[is_secondary] <- 1.0
-
-    # Direct upstream influences and downstream effects get clearer borders.
-    is_incoming_node <- focused_nodes$id %in% incoming_nodes
-    is_outgoing_node <- focused_nodes$id %in% outgoing_nodes
-
-    focused_nodes$borderWidth[is_incoming_node | is_outgoing_node] <- 2.0
-
-    # Give the exact focus concept the strongest ring.
-    is_center <- focused_nodes$id == center_id
-    focused_nodes$borderWidth[is_center] <- 4.0
-    focused_nodes$borderWidthSelected[is_center] <- 4.8
-
-    edge_related <-
-      focused_edges$from %in% two_hop &
-      focused_edges$to %in% two_hop
-
-    # Background connections nearly disappear, but remain available as context.
-    focused_edges$color <- "rgba(108,132,140,0.055)"
-    focused_edges$width <- 0.72
-
-    # Related second-degree pathways are visible enough to preserve context.
-    focused_edges$color[edge_related] <- "rgba(115,151,164,0.28)"
-    focused_edges$width[edge_related] <- 1.55
-
-    # Direct incoming influences use cool blue.
-    focused_edges$color[incoming_primary] <- "rgba(120,203,235,0.98)"
-    focused_edges$width[incoming_primary] <- 4.2
-
-    # Direct downstream effects use warm pale gold so direction is immediately legible.
-    focused_edges$color[outgoing_primary] <- "rgba(239,205,132,0.98)"
-    focused_edges$width[outgoing_primary] <- 4.2
-
-    list(nodes = focused_nodes, edges = focused_edges)
-  }
-
-
-
-  show_full_graph <- function(
-    focus_id = NULL,
-    focus_scale = 0.85
-  ) {
-
-    proxy <- visNetworkProxy("health_network")
-
-    # Update styling in place instead of replacing the network dataset.
-    # This preserves the stable node coordinates created by the initial
-    # layout, so returning home/full network never collapses or overlaps
-    # the graph.
-    visUpdateNodes(
-      proxy,
-      nodes = vis_nodes
-    )
-
-    visUpdateEdges(
-      proxy,
-      edges = vis_edges
-    )
-
-    graph_mode("full")
-    graph_center(NULL)
-
-    session$onFlushed(
-      function() {
-        visFit(
-          proxy,
-          animation = list(
-            duration = 500,
-            easingFunction = "easeInOutQuad"
-          )
-        )
-      },
-      once = TRUE
-    )
-  }
-
-
-  focus_node_network <- function(
-    center_id,
-    degrees = 2
-  ) {
-
-    focused <- build_focus_graph(center_id, degrees)
-    proxy <- visNetworkProxy("health_network")
-
-    # Focus is purely a visual emphasis change. Keep the underlying
-    # node coordinates untouched so the user's mental map never moves.
-    visUpdateNodes(
-      proxy,
-      nodes = focused$nodes
-    )
-
-    visUpdateEdges(
-      proxy,
-      edges = focused$edges
-    )
-
-    graph_mode("focus")
-    graph_center(center_id)
-
-    # Keep the whole network in view so search changes emphasis rather
-    # than replacing the user's mental map with a different mini-tree.
-    session$onFlushed(
-      function() {
-        visFit(
-          proxy,
-          animation = list(
-            duration = 550,
-            easingFunction = "easeInOutQuad"
-          )
-        )
-      },
-      once = TRUE
-    )
-  }
-
-
-  # ==========================================================
-  # GRAPH MODE STATUS
-  # ==========================================================
-  
-  output$graph_mode_text <-
-    renderText({
-      
-      if (graph_mode() == "full") {
-        
-        return(
-          paste(
-            "Showing the full health network •",
-            nrow(nodes),
-            "concepts"
-          )
-        )
-      }
-      
-      center_id <-
-        graph_center()
-      
-      if (
-        is.null(center_id) ||
-        !center_id %in% nodes$node_id
-      ) {
-        return("")
-      }
-      
-      center_name <-
-        nodes$node_name[
-          match(
-            center_id,
-            nodes$node_id
-          )
-        ]
-      
-      highlighted_count <-
-        length(
-          get_neighborhood(
-            center_id,
-            2
-          )
-        )
-      
-      paste0(
-        "Focused on ",
-        center_name,
-        " • blue arrows = upstream influences • gold arrows = downstream effects • ",
-        highlighted_count,
-        " related concepts highlighted"
-      )
-    })
-  
-  
-  # ==========================================================
-  # SEARCH
-  # ==========================================================
-  
-  observeEvent(
-    input$node_search,
-    {
-      
-      node_id <-
-        input$node_search
-      
-      if (
-        is.null(node_id) ||
-        !nzchar(node_id)
-      ) {
-        
-        show_full_graph()
-        
-        return()
-      }
-      
-      if (!node_id %in% nodes$node_id) {
-        return()
-      }
-      
-      selected_type("node")
-      selected_id(node_id)
-      
-      searched_zip(NULL)
-      live_local_data(NULL)
-      
-      focus_node_network(
-        node_id,
-        degrees = 2
-      )
-    },
-    
-    ignoreInit = TRUE
-  )
-  
-  
-  # ==========================================================
-  # SHOW FULL NETWORK BUTTON
-  # ==========================================================
-  
-  observeEvent(
-    input$show_full_network,
-    {
-      
-      updateSelectizeInput(
-        session,
-        "node_search",
-        selected = ""
-      )
-      
-      show_full_graph()
+    focused_nodes$hidden <- !focused_nodes$id %in% visible
+    focused_edges$hidden <- !direct
+    focused_nodes$borderWidth[focused_nodes$id == center_id] <- 4
+    focused_nodes$color.border[focused_nodes$id == center_id] <- "#125e52"
+    focused_edges$color[focused_edges$to == center_id] <- "#216b91"
+    focused_edges$color[focused_edges$from == center_id] <- "#906114"
+    focused_edges$width[direct] <- 2.8
+    if (!is.null(edge_id)) {
+      focused_edges$color[focused_edges$id == edge_id] <- "#125e52"
+      focused_edges$width[focused_edges$id == edge_id] <- 5.0
     }
-  )
-  
-  
+    list(nodes = compact_atlas_nodes(focused_nodes), edges = focused_edges, visible = visible)
+
+  }
+
+
+
+  update_atlas_graph <- function(graph_nodes, graph_edges, visible, focus_panel = FALSE) {
+    proxy <- visNetworkProxy("health_network")
+    visUpdateNodes(proxy, nodes = graph_nodes)
+    visUpdateEdges(proxy, edges = graph_edges)
+    session$sendCustomMessage("atlasFit", list(nodes = as.list(visible), panel = focus_panel))
+  }
+
+  show_full_graph <- function() {
+    graph_center(NULL)
+    update_atlas_graph(vis_nodes, vis_edges, character())
+  }
+
+  focus_node_network <- function(center_id, edge_id = NULL) {
+    focused <- build_focus_graph(center_id, edge_id)
+    graph_center(center_id)
+    update_atlas_graph(focused$nodes, focused$edges, focused$visible, focus_panel = TRUE)
+  }
+
+  clear_atlas_details <- function() {
+    selected_type(NULL)
+    selected_id(NULL)
+    edge_return_node(NULL)
+    searched_zip(NULL)
+    live_local_data(NULL)
+  }
+
+  select_atlas_node <- function(id) {
+    if (is.null(id) || !id %in% vis_nodes$id) return(invisible(NULL))
+    selected_type("node")
+    selected_id(id)
+    edge_return_node(NULL)
+    searched_zip(NULL)
+    live_local_data(NULL)
+    focus_node_network(id)
+  }
+
+  observeEvent(input$node_search, {
+    id <- input$node_search
+    if (nzchar(id)) {
+      # Updating the displayed value after a map click can also notify Shiny.
+      if (!identical(graph_center(), id)) select_atlas_node(id)
+    }
+  }, ignoreInit = TRUE)
+
+  reset_atlas <- function() {
+    clear_atlas_details()
+    updateSelectizeInput(session, "node_search", selected = "")
+    show_full_graph()
+  }
+
+  observeEvent(input$show_full_network, reset_atlas())
+
+
+
+
   # ==========================================================
   # SCROLL HELPER
   # ==========================================================
   
   scroll_to_local_results <- function() {
-    
+
     session$onFlushed(
       
       function() {
@@ -6283,57 +6038,6 @@ server <- function(
   # FOCUS LABEL
   # ==========================================================
   
-  output$focus_text <-
-    renderText({
-      
-      type <- selected_type()
-      id <- selected_id()
-      
-      if (
-        is.null(type) ||
-        is.null(id)
-      ) {
-        
-        return(
-          "Click a term or arrow to explore it"
-        )
-      }
-      
-      if (type == "node") {
-        
-        name <-
-          nodes$node_name[
-            nodes$node_id == id
-          ]
-        
-        return(
-          paste(
-            "Currently exploring:",
-            name
-          )
-        )
-      }
-      
-      edge <-
-        edges_with_sources[
-          edges_with_sources$relationship_id == id,
-        ]
-      
-      if (nrow(edge) > 0) {
-        
-        return(
-          paste(
-            edge$from_name[1],
-            "→",
-            edge$to_name[1]
-          )
-        )
-      }
-      
-      ""
-    })
-  
-  
   # ==========================================================
   # ZIP SEARCH
   # ==========================================================
@@ -6627,6 +6331,12 @@ server <- function(
           tags$div(
             
             class = "side-panel",
+            role = "region",
+            `aria-label` = "Relationship details",
+            if (!is.null(edge_return_node())) atlas_button(
+              paste("Back to", nodes$node_name[match(edge_return_node(), nodes$node_id)]),
+              "atlas_back_node", edge_return_node(), "atlas-control"
+            ),
             
             tags$div(
               
@@ -6641,7 +6351,8 @@ server <- function(
                 
                 tags$div(
                   
-                  class = "relationship-big-path",
+                  class = "relationship-big-path atlas-panel-heading",
+                  role = "heading", `aria-level` = "2", tabindex = "-1",
                   
                   edge$from_name,
                   
@@ -6657,15 +6368,28 @@ server <- function(
               actionButton(
                 "close_panel",
                 HTML("&times;"),
-                class = "close-panel-button"
+                class = "close-panel-button", `aria-label` = "Close details"
               )
             ),
             
             
             tags$div(
               class = "evidence-section",
-              tags$h4("Why These Are Linked"),
-              tags$p(style = "font-weight:650;color:#F0F4F5;", edge$short_explanation)
+              tags$h4("What the connection means"),
+              tags$p(edge$short_explanation),
+              tags$p(class = "atlas-evidence-meta", paste(
+                if (identical(edge$badge, "RISK ASSOCIATION")) "Association" else
+                  gsub("_", " ", edge$relationship_type), "·", paste(edge$evidence_strength, "evidence")
+              )),
+              if (!is.na(edge$url) && nzchar(edge$url)) tags$a(
+                href = edge$url, target = "_blank", rel = "noopener noreferrer",
+                paste0(edge$organization, " · ", edge$title, " ↗")
+              )
+            ),
+            tags$div(
+              class = "atlas-edge-endpoints",
+              atlas_button(edge$from_name, "clicked_node", edge$from_node),
+              atlas_button(edge$to_name, "clicked_node", edge$to_node)
             ),
 
             tags$div(
@@ -6710,58 +6434,6 @@ server <- function(
                 tags$div(
                   style = "color:#CFD8DA;font-size:13px;line-height:1.5;",
                   edge$secondary_text
-                )
-              )
-            },
-
-            tags$div(
-              class = "evidence-section",
-              tags$h4("Evidence & Relationship Type"),
-              
-              tags$p(
-                tags$b(
-                  "Relationship type: "
-                ),
-                gsub(
-                  "_",
-                  " ",
-                  edge$relationship_type
-                )
-              ),
-              
-              tags$p(
-                tags$b(
-                  "Evidence strength: "
-                ),
-                edge$evidence_strength
-              )
-            ),
-            
-            
-            if (
-              !is.na(edge$url) &&
-              nzchar(edge$url)
-            ) {
-              
-              tags$div(
-                
-                class = "evidence-section",
-                
-                tags$h4(
-                  "Source"
-                ),
-                
-                tags$p(
-                  edge$organization,
-                  tags$br(),
-                  edge$title
-                ),
-                
-                tags$a(
-                  class = "source-button",
-                  href = edge$url,
-                  target = "_blank",
-                  "Open source ↗"
                 )
               )
             }
@@ -7379,7 +7051,7 @@ server <- function(
       
       tags$div(
         
-        class = "side-panel",
+        class = "side-panel", role = "region", `aria-label` = "Concept details",
         
         tags$div(
           
@@ -7393,7 +7065,7 @@ server <- function(
             ),
             
             tags$h2(
-              class = "side-panel-title",
+              class = "side-panel-title atlas-panel-heading", tabindex = "-1",
               node$node_name[1]
             )
           ),
@@ -7401,7 +7073,7 @@ server <- function(
           actionButton(
             "close_panel",
             HTML("&times;"),
-            class = "close-panel-button"
+            class = "close-panel-button", `aria-label` = "Close details"
           )
         ),
         
@@ -7411,94 +7083,15 @@ server <- function(
           node$description[1]
         ),
         
-        
-        tags$div(
-          
+        atlas_connections(incoming, "What shapes it", "from_name"),
+        atlas_connections(outgoing, "What it can affect", "to_name"),
+        tags$details(
           class = "why-box",
-          
-          tags$div(
-            class = "why-label",
-            "Why this matters"
-          ),
-          
-          tags$div(
-            class = "why-text",
-            node$why_it_matters[1]
-          )
+          tags$summary("Why this matters"),
+          tags$p(class = "why-text", node$why_it_matters[1])
         ),
-        
-        
         intervention_ui,
-        
-        local_help_ui,
-        
-        
-        if (nrow(incoming) > 0) {
-          
-          tags$div(
-            
-            class = "connections",
-            
-            tags$h4(
-              "Upstream connections"
-            ),
-            
-            tags$ul(
-              
-              lapply(
-                
-                seq_len(
-                  nrow(incoming)
-                ),
-                
-                function(i) {
-                  
-                  tags$li(
-                    paste0(
-                      incoming$from_name[i],
-                      " — ",
-                      incoming$short_explanation[i]
-                    )
-                  )
-                }
-              )
-            )
-          )
-        },
-        
-        
-        if (nrow(outgoing) > 0) {
-          
-          tags$div(
-            
-            class = "connections",
-            
-            tags$h4(
-              "Downstream connections"
-            ),
-            
-            tags$ul(
-              
-              lapply(
-                
-                seq_len(
-                  nrow(outgoing)
-                ),
-                
-                function(i) {
-                  
-                  tags$li(
-                    paste0(
-                      outgoing$to_name[i],
-                      " — ",
-                      outgoing$short_explanation[i]
-                    )
-                  )
-                }
-              )
-            )
-          )
-        }
+        local_help_ui
       )
     })
   
@@ -7510,17 +7103,18 @@ server <- function(
   output$health_network <-
     renderVisNetwork({
       
+      starter_nodes <- vis_nodes
+      starter_edges <- vis_edges
+      starter_nodes$hidden <- !starter_nodes$id %in% atlas_starter_nodes
+      starter_nodes <- compact_atlas_nodes(starter_nodes)
+      starter_edges$hidden <- !starter_edges$from %in% atlas_starter_nodes |
+        !starter_edges$to %in% atlas_starter_nodes
+
       network <-
-        
         visNetwork(
-          
-          vis_nodes,
-          vis_edges,
-          
-          width = "100%",
-          height = "1200px",
-          background = "#050505"
-          
+          starter_nodes, starter_edges,
+          width = "100%", height = "100%", background = "#f6f4ec"
+
         ) %>%
         
         visLayout(
@@ -7550,38 +7144,16 @@ server <- function(
               minimum = 40
             ),
           
-          scaling =
-            list(
-              min = 18,
-              max = 35,
-              label =
-                list(
-                  enabled = TRUE,
-                  min = 19,
-                  max = 19,
-                  drawThreshold = 10
-                )
-            ),
           
           font =
             list(
-              face = "Manrope",
+              face = "Instrument Sans, system-ui, sans-serif",
               strokeWidth = 0
             ),
           
           shapeProperties =
             list(
-              borderRadius = 14
-            ),
-          
-          shadow =
-            list(
-              enabled = TRUE,
-              color =
-                "rgba(0,0,0,0.36)",
-              size = 8,
-              x = 0,
-              y = 3
+              borderRadius = 7
             )
           
         ) %>%
@@ -7624,70 +7196,25 @@ server <- function(
         visInteraction(
           hover = TRUE,
           navigationButtons = FALSE,
-          keyboard = TRUE,
+          keyboard = FALSE,
           zoomView = TRUE,
           dragView = TRUE,
           dragNodes = FALSE
         ) %>%
         
-        visOptions(
-          
-          highlightNearest =
-            list(
-              enabled = TRUE,
-              degree = 1,
-              hover = TRUE,
-              hideColor =
-                "rgba(74,82,85,0.10)",
-              labelOnly = FALSE
-            )
-        ) %>%
-        
-        visEvents(
-          
-          selectNode = "
+        visEvents(click = "
+          function(properties) {
+            var input = properties.nodes.length ? 'clicked_node' : 'clicked_edge';
+            var id = properties.nodes[0] || properties.edges[0];
+            if (id) Shiny.setInputValue(input, id, {priority:'event'});
+          }
+        ") %>%
 
-            function(properties) {
-
-              if (
-                properties.nodes.length > 0
-              ) {
-
-                Shiny.setInputValue(
-                  'clicked_node',
-                  properties.nodes[0],
-                  {priority:'event'}
-                );
-              }
-            }
-
-          ",
-          
-          selectEdge = "
-
-            function(properties) {
-
-              if (
-                properties.edges.length > 0 &&
-                properties.nodes.length == 0
-              ) {
-
-                Shiny.setInputValue(
-                  'clicked_edge',
-                  properties.edges[0],
-                  {priority:'event'}
-                );
-              }
-            }
-
-          "
-        ) %>%
-        
         visPhysics(
           enabled = FALSE
         )
       
-      
+      network$x$atlasStarterNodes <- as.list(atlas_starter_nodes)
       # ======================================================
       # CUSTOM BUTTON LOGIC
       # ======================================================
@@ -7733,218 +7260,35 @@ server <- function(
             }
           });
 
-          /*
-           * DOWNSTREAM FLOW ANIMATION
-           *
-           * A small glowing particle follows each edge's actual drawn path from
-           * its `from` node to its `to` node. That gives the network a constant, subtle sense of
-           * direction without making the arrows thicker or more cluttered.
-           *
-           * Hovering an edge pauses that edge. Clicking/selecting an edge
-           * keeps that edge paused while the evidence panel is open. People
-           * who prefer reduced motion get the static network automatically.
-           */
-
-          if (el.__upstreamFlowFrame) {
-            cancelAnimationFrame(el.__upstreamFlowFrame);
+          var fitNodes = Object.values(x.atlasStarterNodes || []);
+          var fitFrame = 0;
+          function fitAtlas() {
+            cancelAnimationFrame(fitFrame);
+            fitFrame = requestAnimationFrame(function() {
+              if (!el.clientWidth || !el.clientHeight) return;
+              network.fit(fitNodes.length ? {nodes:fitNodes} : {});
+            });
           }
-
-          var reduceMotion = false;
-          try {
-            reduceMotion = window.matchMedia &&
-              window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          } catch (e) {}
-
-          var flowState = {
-            hoveredEdge: null,
-            selectedEdge: null,
-            lastRedraw: 0
-          };
-
-          function flowAlpha(colorValue) {
-            if (!colorValue || typeof colorValue !== 'string') return 0.24;
-            var match = colorValue.match(/rgba[(][^,]+,[^,]+,[^,]+,[ ]*([0-9.]+)[ ]*[)]/i);
-            if (!match) return 1;
-            var value = parseFloat(match[1]);
-            return isNaN(value) ? 1 : value;
-          }
-
-          function flowParticleColor(edgeItem, alpha) {
-            var c = edgeItem && edgeItem.color;
-            if (typeof c === 'string') {
-              if (c.indexOf('239,205,132') !== -1) {
-                return 'rgba(247,214,145,0.96)';
-              }
-              if (c.indexOf('120,203,235') !== -1) {
-                return 'rgba(130,211,242,0.98)';
-              }
-            }
-            return alpha > 0.70
-              ? 'rgba(177,220,236,0.96)'
-              : 'rgba(151,190,205,0.62)';
-          }
-
-          function stablePhase(id) {
-            var text = String(id || '');
-            var h = 0;
-            for (var i = 0; i < text.length; i++) {
-              h = ((h << 5) - h) + text.charCodeAt(i);
-              h |= 0;
-            }
-            return (Math.abs(h) % 1000) / 1000;
-          }
-
-          network.on('hoverEdge', function(params) {
-            flowState.hoveredEdge = params && params.edge != null
-              ? String(params.edge)
-              : null;
+          var resizeObserver = new ResizeObserver(fitAtlas);
+          resizeObserver.observe(el);
+          Shiny.addCustomMessageHandler('atlasReturnFocus', function() {
+            var search = document.querySelector('#main-explore-content .selectize-input input');
+            if (search) search.focus();
           });
-
-          network.on('blurEdge', function(params) {
-            if (!params || params.edge == null ||
-                flowState.hoveredEdge === String(params.edge)) {
-              flowState.hoveredEdge = null;
-            }
-          });
-
-          network.on('selectEdge', function(params) {
-            flowState.selectedEdge = params && params.edges && params.edges.length
-              ? String(params.edges[0])
-              : null;
-          });
-
-          network.on('deselectEdge', function() {
-            flowState.selectedEdge = null;
-          });
-
-          network.on('selectNode', function() {
-            flowState.selectedEdge = null;
-          });
-
-          if (!reduceMotion) {
-            network.on('afterDrawing', function(ctx) {
-              var edgesData = network.body && network.body.data
-                ? network.body.data.edges
-                : null;
-              if (!edgesData) return;
-
-              var now = performance.now();
-              // Slow, deliberate movement: one pass takes about 6.5 seconds.
-              var base = (now % 6500) / 6500;
-              var ids = edgesData.getIds();
-
-              for (var i = 0; i < ids.length; i++) {
-                var id = String(ids[i]);
-                if (id === flowState.hoveredEdge || id === flowState.selectedEdge) {
-                  continue;
-                }
-
-                var edgeItem = edgesData.get(ids[i]);
-                if (!edgeItem || edgeItem.hidden) continue;
-
-                var alpha = flowAlpha(edgeItem.color);
-                if (alpha < 0.12) continue;
-
-                var phase = stablePhase(id);
-                var t = (base + phase) % 1;
-
-                // Keep the particle away from the node centers. Most importantly,
-                // use visNetwork's own edge geometry so it follows the actual
-                // straight/curved arrow rather than cutting across beside it.
-                t = 0.06 + (t * 0.88);
-
-                var point = null;
-                var liveEdge = network.body && network.body.edges
-                  ? network.body.edges[ids[i]]
-                  : null;
-
-                try {
-                  if (liveEdge && liveEdge.edgeType &&
-                      typeof liveEdge.edgeType.getPoint === 'function') {
-                    point = liveEdge.edgeType.getPoint(t);
-                  } else if (liveEdge && typeof liveEdge.getPoint === 'function') {
-                    point = liveEdge.getPoint(t);
-                  }
-                } catch (e) {
-                  point = null;
-                }
-
-                // Fallback for any edge type that does not expose its path.
-                if (!point || !isFinite(point.x) || !isFinite(point.y)) {
-                  var positions = network.getPositions([edgeItem.from, edgeItem.to]);
-                  var fromPos = positions[edgeItem.from];
-                  var toPos = positions[edgeItem.to];
-                  if (!fromPos || !toPos) continue;
-                  point = {
-                    x: fromPos.x + ((toPos.x - fromPos.x) * t),
-                    y: fromPos.y + ((toPos.y - fromPos.y) * t)
-                  };
-                }
-
-                var xPos = point.x;
-                var yPos = point.y;
-                var strong = alpha > 0.70;
-                var radius = strong ? 2.8 : 1.65;
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.arc(xPos, yPos, radius, 0, Math.PI * 2, false);
-                ctx.fillStyle = flowParticleColor(edgeItem, alpha);
-                ctx.shadowColor = flowParticleColor(edgeItem, alpha);
-                ctx.shadowBlur = strong ? 7 : 4;
-                ctx.fill();
-                ctx.restore();
+          Shiny.addCustomMessageHandler('atlasFit', function(message) {
+            fitNodes = Object.values(message.nodes);
+            network.unselectAll();
+            fitAtlas();
+            if (message.panel) requestAnimationFrame(function() {
+              var pane = document.getElementById('side_panel');
+              var heading = pane && pane.querySelector('.atlas-panel-heading');
+              if (heading) {
+                pane.scrollTop = 0;
+                heading.focus({preventScroll: window.innerWidth > 760});
               }
             });
+          });
 
-            function animateDownstreamFlow(timestamp) {
-              if (!document.documentElement.contains(el)) return;
-
-              // ~30 FPS is smooth enough for flow while keeping CPU use low.
-              if (timestamp - flowState.lastRedraw > 33) {
-                if (el.offsetParent !== null) {
-                  network.redraw();
-                }
-                flowState.lastRedraw = timestamp;
-              }
-
-              el.__upstreamFlowFrame = requestAnimationFrame(animateDownstreamFlow);
-            }
-
-            el.__upstreamFlowFrame = requestAnimationFrame(animateDownstreamFlow);
-          }
-
-          setTimeout(function() {
-            network.fit({
-              animation:{
-                duration:180,
-                easingFunction:'easeInOutQuad'
-              }
-            });
-
-            // Start a little closer than a full-network fit so first-time
-            // visitors can actually read node labels immediately. Users can
-            // still zoom out or use Return to full network whenever they want.
-            setTimeout(function() {
-              var fittedScale = network.getScale();
-              var currentPosition = network.getViewPosition();
-              var isPhone = window.innerWidth <= 700;
-              var minimumReadableScale = isPhone ? 0.54 : 0.58;
-              var targetScale = Math.max(
-                fittedScale * (isPhone ? 1.16 : 1.22),
-                minimumReadableScale
-              );
-
-              network.moveTo({
-                position: currentPosition,
-                scale: targetScale,
-                animation:{
-                  duration:260,
-                  easingFunction:'easeInOutQuad'
-                }
-              });
-            }, 230);
-          }, 20);
 
           /*
            * ZOOM IN
@@ -8024,31 +7368,6 @@ server <- function(
           }
 
 
-          /*
-           * HOME
-           *
-           * Shiny handles restoring the full graph.
-           * JavaScript just tells Shiny the button was clicked.
-           */
-
-          var homeButton =
-            document.getElementById('map_home_btn');
-
-          if (homeButton) {
-
-            homeButton.onclick = function(event) {
-
-              event.preventDefault();
-              event.stopPropagation();
-
-              Shiny.setInputValue(
-                'map_home_clicked',
-                Date.now(),
-                {priority:'event'}
-              );
-            };
-          }
-
 
           /*
            * PAGE SCROLL FIX
@@ -8083,7 +7402,7 @@ server <- function(
         "
       )
     })
-  
+  outputOptions(output, "health_network", suspendWhenHidden = FALSE)
   
   # ==========================================================
   # NODE CLICK
@@ -8092,121 +7411,36 @@ server <- function(
   observeEvent(
     input$clicked_node,
     {
-      
       id <- input$clicked_node
-      
-      selected_type("node")
-      selected_id(id)
-      
-      searched_zip(NULL)
-      live_local_data(NULL)
-      
-      proxy <-
-        visNetworkProxy(
-          "health_network"
-        )
-      
-      visFocus(
-        
-        proxy,
-        
-        id = id,
-        
-        scale = 1.15,
-        
-        animation =
-          list(
-            duration = 650,
-            easingFunction =
-              "easeInOutQuad"
-          )
-      )
+      if (!id %in% vis_nodes$id) return()
+      select_atlas_node(id)
+      updateSelectizeInput(session, "node_search", selected = id)
     }
   )
-  
-  
-  # ==========================================================
-  # EDGE CLICK
-  # ==========================================================
-  
-  observeEvent(
-    input$clicked_edge,
-    {
-      
-      selected_type("edge")
-      
-      selected_id(
-        input$clicked_edge
-      )
-      
-      searched_zip(NULL)
-      live_local_data(NULL)
-    }
-  )
-  
-  
-  # ==========================================================
-  # CLOSE PANEL
-  # ==========================================================
-  
-  observeEvent(
-    input$close_panel,
-    {
-      
-      selected_type(NULL)
-      selected_id(NULL)
-      searched_zip(NULL)
-      live_local_data(NULL)
-    }
-  )
-  
-  
-  # ==========================================================
-  # CUSTOM HOME BUTTON
-  # ==========================================================
-  
-  observeEvent(
-    input$map_home_clicked,
-    {
-      
-      selected_type(NULL)
-      selected_id(NULL)
-      searched_zip(NULL)
-      live_local_data(NULL)
-      
-      updateSelectizeInput(
-        session,
-        "node_search",
-        selected = ""
-      )
-      
-      show_full_graph()
-    }
-  )
-  
-  
-  # ==========================================================
-  # TOP RESET BUTTON
-  # ==========================================================
-  
-  observeEvent(
-    input$reset_view,
-    {
-      
-      selected_type(NULL)
-      selected_id(NULL)
-      searched_zip(NULL)
-      live_local_data(NULL)
-      
-      updateSelectizeInput(
-        session,
-        "node_search",
-        selected = ""
-      )
-      
-      show_full_graph()
-    }
-  )
+
+  observeEvent(input$clicked_edge, {
+    edge <- vis_edges[match(input$clicked_edge, vis_edges$id), , drop = FALSE]
+    if (is.na(edge$id)) return()
+    center <- graph_center()
+    if (is.null(center) || !center %in% c(edge$from, edge$to)) center <- edge$from
+    edge_return_node(center)
+    selected_type("edge")
+    selected_id(edge$id)
+    searched_zip(NULL)
+    live_local_data(NULL)
+    focus_node_network(center, edge$id)
+  })
+
+  observeEvent(input$atlas_back_node, {
+    if (!identical(input$atlas_back_node, edge_return_node())) return()
+    select_atlas_node(input$atlas_back_node)
+    updateSelectizeInput(session, "node_search", selected = input$atlas_back_node)
+  })
+
+  observeEvent(input$close_panel, {
+    reset_atlas()
+    session$sendCustomMessage("atlasReturnFocus", list())
+  })
 }
 
 
